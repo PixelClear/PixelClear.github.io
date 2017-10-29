@@ -1,14 +1,14 @@
 ---
-layout: post
-title:  "Over Draw Count is your enemy!!"
-date:   2017-10-29 15:13:36 +0100
-categories: technical post
+layout : post
+title : Over Draw Count
 ---
+
+<meta charset="utf-8" emacsmode="-*- markdown -*-"><link rel="stylesheet" href="https://casual-effects.com/markdeep/latest/dark.css?">
 
 **Over Draw Count is Your Enemy**
 -------------------------------------------------------------------------------------------------------------------------------------
 
-**What is overdraw count ?**
+**what is overdraw count ?**
 =====================================================================================================================================
 Mostly on embedded hardware the major concern for performance drop could be overdraw. Basically one pixel on screen is shaded multiple times by the GPU due to nature of geometry or scene we are drawing and this is called as overdraw. There are many tools to visualize overdraw count.
 
@@ -82,3 +82,6 @@ Note : On android you can see this overdraw count in debug GPU options.
 
 ![Demo Of OverDraw Count](https://youtu.be/Ko8ctJQeewY)
 
+
+
+<!-- Markdeep: --><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?"></script>
