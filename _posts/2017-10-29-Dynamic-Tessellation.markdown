@@ -5,7 +5,7 @@ date:   2017-10-29 15:13:36 +0100
 categories: technical post
 ---
 
-![Tessellation](/Images/Tess0.png){:class="img-responsive"}
+![Tessellation](Images/Tess0.png){:class="img-responsive"}
 
 **What was done before programmable pipeline ?**
 =====================================================================================================================================
