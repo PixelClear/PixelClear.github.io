@@ -1,9 +1,9 @@
 ---
-layout : post
-title : Over Draw Count
+layout: post
+title:  "Over Draw Count is your enemy!!"
+date:   2017-10-29 15:13:36 +0100
+categories: technical post
 ---
-
-<meta charset="utf-8" emacsmode="-*- markdown -*-"><link rel="stylesheet" href="https://casual-effects.com/markdeep/latest/dark.css?">
 
 **Over Draw Count is Your Enemy**
 -------------------------------------------------------------------------------------------------------------------------------------
@@ -81,6 +81,3 @@ Note : On android you can see this overdraw count in debug GPU options.
 
 ![Demo Of OverDraw Count](https://youtu.be/Ko8ctJQeewY)
 
-
-
-<!-- Markdeep: --><script src="https://casual-effects.com/markdeep/latest/markdeep.min.js?"></script>
