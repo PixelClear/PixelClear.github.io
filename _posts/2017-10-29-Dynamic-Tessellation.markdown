@@ -10,7 +10,7 @@ categories: technical post
 **What was done before programmable pipeline ?**
 =====================================================================================================================================
 
-        Dynamic level of details previous to programmable pipeline used to be implemented on CPU and then push modified vertices down the pipeline. There were two distinct disadvantages to this scheme,
+Dynamic level of details previous to programmable pipeline used to be implemented on CPU and then push modified vertices down the pipeline. There were two distinct disadvantages to this scheme,
 
 1. we are bound by bus bandwidth when copying new generated vertices from CPU to GPU.As the level of detail increases and hence, more number of vertices needs to be copied.This will degrade performance of your application and make it bus bandwidth bound.
 
@@ -47,9 +47,9 @@ In this article I have implemented first method. It is pretty straight forward t
 
 For the primitives that share edges the outer tessellation level needs to be carefully generated.The outer tessellation level generated for edges shared by primitives must match else we will get cracks.For different orientations sometimes its very tricky to match this levels. Outer tessellation level decides how edge of the primitive will be divided while , inner tessellation level deals with how inner part of patch will be divided. Please see images below ( Credit to NVDIA )
 
-![Tessellation Artifacts](/Images/Tess1.png){:class="img-responsive"}
+![Tessellation Artifacts](./Images/Tess1.png){:class="img-responsive"}
 
-![Tessellation Artifacts](/Images/Tess2.png){:class="img-responsive"}
+![Tessellation Artifacts](./Images/Tess2.jpg){:class="img-responsive"}
 
 **About Demo**
 =====================================================================================================================================
