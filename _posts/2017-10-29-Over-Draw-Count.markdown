@@ -5,9 +5,6 @@ date:   2017-10-29 15:13:36 +0100
 categories: technical post
 ---
 
-**Over Draw Count is Your Enemy**
--------------------------------------------------------------------------------------------------------------------------------------
-
 **What is overdraw count ?**
 =====================================================================================================================================
 Mostly on embedded hardware the major concern for performance drop could be overdraw. Basically one pixel on screen is shaded multiple times by the GPU due to nature of geometry or scene we are drawing and this is called as overdraw. There are many tools to visualize overdraw count.
