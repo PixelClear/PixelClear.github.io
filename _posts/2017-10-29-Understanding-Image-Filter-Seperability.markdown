@@ -78,9 +78,7 @@ h2 =
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 So now we have simplified two-dimensional h into h1 and h1 which are one dimensional.
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 h1 =
     0.2501
     0.4997
@@ -94,9 +92,7 @@ ans = h
     0.0626    0.1250    0.0626
     0.1250    0.2497    0.1250
     0.0626    0.1250    0.0626
-
-﻿~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-﻿Hence by using **h1** and **h2** we are getting back **h**.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Hence by using **h1** and **h2** we are getting back **h**.
 
 Now we can take one-dimensional filter [0.2501 0.4997 0.2501] and apply it on our image to get effect of original Gaussian blur function we had. Lets say our image had X and Y dimension then we apply this one-dimensional filter on X direction first and then we apply same filter on Y direction to get desired result.
