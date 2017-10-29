@@ -80,5 +80,5 @@ In demo video you can see we are rendering many teapots and blending is on.So pi
 
 Note : On android you can see this overdraw count in debug GPU options.
 
-![Demo Of OverDraw Count](https://youtu.be/Ko8ctJQeewY)
+[Demo Of OverDraw Count](https://youtu.be/Ko8ctJQeewY)
 
