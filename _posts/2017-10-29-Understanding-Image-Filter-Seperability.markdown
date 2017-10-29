@@ -80,6 +80,7 @@ h2 =
 So now we have simplified two-dimensional h into h1 and h1 which are one dimensional.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 h1 =
     0.2501
     0.4997
@@ -93,6 +94,7 @@ ans = h
     0.0626    0.1250    0.0626
     0.1250    0.2497    0.1250
     0.0626    0.1250    0.0626
+
 ﻿~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ﻿Hence by using **h1** and **h2** we are getting back **h**.
