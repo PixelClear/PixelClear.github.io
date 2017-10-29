@@ -5,7 +5,7 @@ date:   2017-10-29 15:13:36 +0100
 categories: technical post
 ---
 
-![Tessellation]({{site.url}}/posts/Images/Tess0.png){:class="img-responsive"}
+{% include image name="Tess0.png" caption="Tessellation Overview" %}
 
 **What was done before programmable pipeline ?**
 =====================================================================================================================================
