@@ -5,7 +5,7 @@ date:   2017-10-29 15:13:36 +0100
 categories: technical post
 ---
 
-{% include image name="Tess0.png" caption="Tessellation Overview" %}
+![Tessellation overview]({{"/Images/Tess0.png"}})
 
 **What was done before programmable pipeline ?**
 =====================================================================================================================================
