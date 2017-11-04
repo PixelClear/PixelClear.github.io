@@ -5,7 +5,7 @@ date:   2017-10-29 15:13:36 +0100
 categories: technical post
 ---
 
-![Tessellation overview]({{"/_posts/Images/Tess0.png"|absolute_url}})
+![Tessellation overview]("/assets/Tess2.jpg")
 
 **What was done before programmable pipeline ?**
 =====================================================================================================================================
