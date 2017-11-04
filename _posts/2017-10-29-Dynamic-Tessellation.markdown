@@ -6,6 +6,7 @@ categories: technical post
 ---
 
 ![Tessellation overview](../assets/Tess0.png)
+![image-title-here](../assets/Tess2.jpg){:class="img-responsive"}
 
 **What was done before programmable pipeline ?**
 =====================================================================================================================================
