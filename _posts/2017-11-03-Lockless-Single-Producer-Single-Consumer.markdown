@@ -81,15 +81,17 @@ public:
   }
 };
 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-I wanted to implement multithreaded solution for single producer- consumer problem.
-Initially I came up with mutex version which was pretty straight forward. Then going further there was solution using compare and exchange
-like method and make algorithm lock less. Consider the true nature of problem and single producer-consumer to my advantage I tried using
-special node as fence between producer and cosumer and turns out I got simpler solution.
 int main()
 {
 	//Create Thread 1 Writer
 	//Create Thread 2 reader
 	return 0;
 }
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+I wanted to implement multithreaded solution for single producer- consumer problem.
+Initially I came up with mutex version which was pretty straight forward. Then going further there was solution using compare and exchange
+like method and make algorithm lock less. Consider the true nature of problem and single producer-consumer to my advantage I tried using
+special node as fence between producer and cosumer and turns out I got simpler solution.
+
