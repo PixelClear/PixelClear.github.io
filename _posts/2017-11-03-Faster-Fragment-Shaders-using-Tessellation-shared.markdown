@@ -6,6 +6,7 @@ categories: technical post
 ---
 
 ![](../assets/TeaPot1.png)
+
 **Faster Fragement Shaders Using Tessellation Shaders**
 =======================================================================================================================================
 If there are very complex operations in fragment shader then, we do see some performance drop. As the execution frequency of fragment shader is per fragment hence, its very high.This is one of the techniques discussed in paper by Wang et al (See reference) and by Erick (See references) to simplify and auto tune fragment shader. Generally lighting calculation can be done in vertex shader or fragment shader. Depending on what quality we want we generally decide place of calculations.Doing lighting calculations in fragment shader will generate great results. So its trade-off between quality and performance.
