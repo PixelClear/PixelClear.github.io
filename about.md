@@ -4,9 +4,12 @@ title: About
 permalink: /about/
 ---
 
-I am graphics programmer with great interest in real time rendering and very amateur offline rendering [you tube channel](https://www.youtube.com/channel/UCEYIi_V3b9eAjcLC2iYaFnQ?view_as=subscriber)
+This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at [jekyllrb.com](http://jekyllrb.com/)
 
-I work for Daqri Holographics Research Lab in Vienna on Mixed Reality Helmets
-[Daqri Holographics](https://www.daqri.com)
+You can find the source code for the Jekyll new theme at:
+{% include icon-github.html username="jglovier" %} /
+[jekyll-new](https://github.com/jglovier/jekyll-new)
 
-You can find link to my twitter and github account below in footer.
+You can find the source code for Jekyll at
+{% include icon-github.html username="jekyll" %} /
+[jekyll](https://github.com/jekyll/jekyll)
