@@ -7,27 +7,25 @@ categories: technical post
 
 **Introduction**
 ==========================================================================================================================================================================================
-Most of the times in graphics we do come across case when we are given some vectors and, we want to define co-ordinate system.  
+Most of the times in graphics we do come across case when we are given some vectors and, we want to define co-ordinate system.   
 
-For example, If we want our camera to follow the character in the scene  and, we have position of camera and position of the character.  
+For example, If we want our camera to follow the character in the scene  and, we have position of camera and position of the character.   
 
-Now in order to do this we will need to find co-ordinate system for camera.  
+Now in order to do this we will need to find co-ordinate system for camera.   
 
 In other words, we need to find orthonormal basis.   
 
-Othnormal basis is nothing but set of vectors perpendicular to each other and unit in length.  
+Othnormal basis is nothing but set of vectors perpendicular to each other and unit in length.   
 
-Given orthonormal basis by using linear combinations of the vectors defining basis, we can derive any vector in the given space.  
+Given orthonormal basis by using linear combinations of the vectors defining basis, we can derive any vector in the given space.   
 
-In our case we can treat co-ordinate system of camera as vector space of 3D vectors.  
-
+In our case we can treat co-ordinate system of camera as vector space of 3D vectors.   
 
 **Algorithm**
 ==========================================================================================================================================================================================
-For this purpose we can use process called as **Grahm schmidt** which is as follows  
+For this purpose we can use process called as **Grahm schmidt** which is as follows   
 
 In order to find orthonormal basis for camera we have two vectors   
-
 
 +
 
