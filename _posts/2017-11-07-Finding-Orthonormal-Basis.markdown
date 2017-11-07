@@ -84,8 +84,7 @@ In order to find orthonormal basis for camera we have two vectors
 ================================================================================================================================================
 
    I have shown above method for set of 3 dimensional vectors.This process can easily be extended to n dimensional set of vectors.  
-
-   Please see below : 
+ 
    ![Formula for projection]({{ site.url }}/assets/gmndim.jpg){:class="img-responsive"}  
 
-   Here set of vector **u(1......n)** are orthogonal and vector **e(1......n)** forms orthonormal basis.
+   Here set of vector **u(1......k)** are orthogonal and vector **e(1......k)** forms orthonormal basis.
