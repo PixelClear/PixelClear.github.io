@@ -23,9 +23,9 @@ In our case we can treat co-ordinate system of camera as vector space of 3D vect
 
 **Algorithm**
 ==========================================================================================================================================================================================
-For this purpose we can use process called as **Grahm schmidt** which is as follows   
+For this purpose we can use process called as **Grahm schmidt** which is as follows\s\s
 
-In order to find orthonormal basis for camera we have two vectors   
+In order to find orthonormal basis for camera we have two vectors\s\s  
 
 +
 
