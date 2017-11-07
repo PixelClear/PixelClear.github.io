@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "Finding orthonormal basis given vector!!"
+title:  "Finding orthonormal basis given set of n dimensional vectors!!"
 date:   2017-11-07 21:22:36 +0100
 categories: technical post
 ---
@@ -43,7 +43,7 @@ In order to find orthonormal basis for camera we have two vectors
   
   Please see below for formula :   
 
-  ![Formula for projection]({{ site.url }}/assets/projutov.jpg){:class="img-responsive"}  
+  ![Formula for projection]({{ site.url }}/assets/prowojutov.jpg){:class="img-responsive"}  
   
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
@@ -80,3 +80,12 @@ In order to find orthonormal basis for camera we have two vectors
 
    Hence starting with a vector we got orthonormal basis defined by vectors **v,s,t** for camera.   
    
+**Extending to n-Dimension**
+================================================================================================================================================
+
+   I have shown above method for set of 3 dimensional vectors.This process can easily be extended to n dimensional set of vectors.  
+
+   Please see below : 
+   ![Formula for projection]({{ site.url }}/assets/gmndim.jpg){:class="img-responsive"}  
+
+   Here set of vector **u(1......n)** are orthogonal and vector **e(1......n)** forms orthonormal basis.
