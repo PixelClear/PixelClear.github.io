@@ -27,9 +27,7 @@ For this purpose we can use process called as **Grahm schmidt** which is as foll
 
 In order to find orthonormal basis for camera we have two vectors    
 
-+
-
-  **v** - Vector got using position of character and position of camera.  
+* **v** - Vector got using position of character and position of camera.  
   
   **u** - Vector got using position of camera and origin of world co-ordinate system.  
   
@@ -37,11 +35,9 @@ In order to find orthonormal basis for camera we have two vectors
   **Note : Camera is placed in scene with respect to some world co-ordinate system.**  
   
 
-+
-
-  Select vector **v** and normalize it.  
+* Select vector **v** and normalize it.  
   
-  **Note : We want out final vectors in orthonormal basis to be unit vectors. **  
+  **Note : We want out final vectors in orthonormal basis to be unit vectors.**  
   
   Select vector u and find projection of **u** onto **v**.   
   
@@ -59,9 +55,7 @@ In order to find orthonormal basis for camera we have two vectors
   Please remembder projection of **u** onto **v** will give us new vector lets call it **projvu** which is in the direction of **v**.  
   
 
-+
-
-  Now using following equation we get new vector which is perpendicular to **v** and **projvu** . Lets call it **s**.  
+* Now using following equation we get new vector which is perpendicular to **v** and **projvu** . Lets call it **s**.  
   
   Please see image below :  
   
@@ -73,13 +67,11 @@ In order to find orthonormal basis for camera we have two vectors
    s = u - projvu ; 
    s = normalize(s);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
-+
-
-   Now we have **v** and **s** which are unit vectors and perpendicular to each other.   
+* Now we have **v** and **s** which are unit vectors and perpendicular to each other.   
    
-   We just need one more unit and perpendicular vector to complete the orthonormal basis.  
+  We just need one more unit and perpendicular vector to complete the orthonormal basis.  
    
-   We can achieve it using following formula.  
+  We can achieve it using following formula.  
    
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
