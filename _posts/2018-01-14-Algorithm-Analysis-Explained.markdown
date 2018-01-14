@@ -8,20 +8,19 @@ categories: technical post
 
 **Introduction**
 ========================================================================
-        
+
     When doing time complexity analysis for any algorithm in hand minimum care you should take is to do emperical analysis and mathematical analysis. 
     I will talk little about both approaches and plus and negatives of each and how using them both could help you getting better approximations.
-
 
 **Emperical analysis**
 =========================================================================
 
-      Suppose you have problem of sorting n integers present in file and output new file with sorted integers. There are multiple ways to achieve the same task. So given any two appoaches to same problem emperical analysis will deal with actually running them with different set of data and then measuring performance. This would definitely give you more visual insight in what is exactly happening.
+    Suppose you have problem of sorting n integers present in file and output new file with sorted integers. There are multiple ways to achieve the same task. So given any two appoaches to same problem emperical analysis will deal with actually running them with different set of data and then measuring performance. This would definitely give you more visual insight in what is exactly happening.
 
 **Advantages of Emperical Analysis**
 ========================================================================
 
-      You are definately getting some exact numbers to compare. You have to be more carefull while chosing the test input. It is adviced you seperate your input in three types.Normal input , Random input and Obfuscated input. Also generate large and random sample size so you hit close to the worst case.
+    You are definately getting some exact numbers to compare. You have to be more carefull while chosing the test input. It is adviced you seperate your input in three types.Normal input , Random input and Obfuscated input. Also generate large and random sample size so you hit close to the worst case.
 
       It will take into account even constant factors contributing to final execution time which mathematical analysis might ignore.
  
@@ -60,8 +59,3 @@ categories: technical post
        Mathematical analysis is not much reliable when it comes to current multithreaded and multicore architectures as most of the execution will be dependent on how schedular schedules thread and how much stalling or thread throttling happens.Mathematical analysis do not consider this side effects of the system.
 
        Another important aspect that is not considered in this analysis is cache performace or effect of cache coherency.So considering the ups and downs or both approach its always better to apply both to get better results.
-
-
-
- 
- 
