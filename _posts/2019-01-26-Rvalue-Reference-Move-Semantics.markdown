@@ -42,16 +42,15 @@ obj = foo(); ---> (1)
 
 As return value of foo() is passed as parameter to operator= and we cant take address of return value of function.
 So its rvalue( dont forget we dont dont yet have rvalue references).
-
 So following thing will happen
 
 a. tmp object will be created and return value of foo will be copied into it and = will be called with ref to tmp.
 
 b. Delete resources held by this (obj)
 
-c. copy resources from tmp to obj
+c. Copy resources from tmp to obj
 
-d. destruct tmp obj
+d. Destruct tmp obj
 
 But we have return value of foo() and obj is in hand.
 So, can we somehow avoid this tmp creation and init x directly with return value of foo()?
@@ -159,11 +158,11 @@ We will see details about RVO/NRVO in next series of articles.
 =====================================================================================================================================
 Move constructor will be called in following cases 
 
-a. initialization: T a = std::move(b); or T a(std::move(b));, where b is of type T;
+a. Initialization: T a = std::move(b); or T a(std::move(b));, where b is of type T;
 
-b. function argument passing: f(std::move(a));, where a is of type T and f is void f(T t);
+b. Function argument passing: f(std::move(a));, where a is of type T and f is void f(T t);
 
-c. function return: return a; inside a function such as T f(), where a is of type T which has a move constructor.
+c. Function return: return a; inside a function such as T f(), where a is of type T which has a move constructor.
 
 **Note:** 
 Point (c) will happend only if there is no RVO or NRVO done by compiler.
