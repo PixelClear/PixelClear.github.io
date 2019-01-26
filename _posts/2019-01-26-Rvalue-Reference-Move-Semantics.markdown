@@ -27,7 +27,7 @@ X& X::operator=(X const& rhs)
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Note:** here that it is accepting & of x.
+**Note:** operator= is accepting & of x.
 
 Now lets see what happens to following code with above declared operator=
 
@@ -38,15 +38,19 @@ X obj;
 obj = foo(); ---> (1)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-(1) above is converted to call like obj.=(foo()).
+(1) above is converted to call like **obj.=(foo())**.
+
 As return value of foo() is passed as parameter to operator= and we cant take address of return value of function.
 So its rvalue( dont forget we dont dont yet have rvalue references).
 
 So following thing will happen
 
 a. tmp object will be created and return value of foo will be copied into it and = will be called with ref to tmp.
+
 b. Delete resources held by this (obj)
+
 c. copy resources from tmp to obj
+
 d. destruct tmp obj
 
 But we have return value of foo() and obj is in hand.
@@ -58,7 +62,7 @@ But, foo() is rvalue and we dont have rvalue references yet.
 
 Here comes to our rescue 'rvalue references'.
 
-So if we have X as type then X& is lvalue reference and X&& is rvalue reference.
+So, if we have X as type then X& is lvalue reference and X&& is rvalue reference.
 As we need to distinguish the move assignment from normal assignment we will use X&& to overload assignment.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -115,7 +119,7 @@ Derived(Derived const & rhs)
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-So right way is 
+So optimized way is 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 class Derived : public Base
@@ -156,7 +160,9 @@ We will see details about RVO/NRVO in next series of articles.
 Move constructor will be called in following cases 
 
 a. initialization: T a = std::move(b); or T a(std::move(b));, where b is of type T;
+
 b. function argument passing: f(std::move(a));, where a is of type T and f is void f(T t);
+
 c. function return: return a; inside a function such as T f(), where a is of type T which has a move constructor.
 
 **Note:** 
@@ -167,7 +173,7 @@ We will see details about RVO/NRVO in next series of articles.
 =====================================================================================================================================
 It is point to remember that when you define your own move constructor for class it should throw exceptions.
 To make strong exception guarantee possible, user-defined move constructors should not throw exceptions. 
-For example, std::vector relies on std::move_if_noexcept to choose between move and copy when the elements need to be relocated.
+For example, **std::vector** relies on **std::move_if_noexcept** to choose between move and copy when the elements need to be relocated.
 So, if your move constructor throws exception consider following code 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
