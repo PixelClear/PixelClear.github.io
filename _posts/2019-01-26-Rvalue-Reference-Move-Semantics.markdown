@@ -9,13 +9,12 @@ categories: technical post
 
 **Introduction**
 =====================================================================================================================================
-Looks like this is long post but dont worry we are going to kill it one at time.
-Before actually looking into what is rvalue and rvalue references are we should look into what problem they are trying to solve.
+Before actually looking into "what is rvalue and rvalue references" are we should look into what problem they are trying to solve.
 
-**Implementing Move Semantics **
+**Implementing Move Semantics**
 =====================================================================================================================================
 Suppose there is no rvalue references.
-Lets see how assignment operator will look like this 
+Lets see how assignment operator will look like and how it will behave
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 X& X::operator=(X const& rhs)
@@ -29,16 +28,20 @@ X& X::operator=(X const& rhs)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Note:** here that it is accepting & of x.
-Now consider following code
+
+Now lets see what happens to following code with above declared operator=
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 X foo();
 X obj;
 
-obj = foo();
+obj = foo(); ---> (1)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Right side of '=' is rvalue we cant take its address (assuming we dont have rvalue references).
+(1) above is converted to call like obj.=(foo()).
+As return value of foo() is passed as parameter to operator= and we cant take address of return value of function.
+So its rvalue( dont forget we dont dont yet have rvalue references).
+
 So following thing will happen
 
 a. tmp object will be created and return value of foo will be copied into it and = will be called with ref to tmp.
@@ -65,7 +68,7 @@ X& X::operator=(X&& rhs)
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Is rvalue reference lvalue or rvalue ? **
+**Is rvalue reference lvalue or rvalue?**
 =====================================================================================================================================
 Rvalue reference can be rvalue or lvalue.
 If rvalue reference has name then it is lvalue.
@@ -78,8 +81,8 @@ void foo(X&& x)
 }
 
 otherwise rvalue reference is rvalue consider following code 
-X&& goo();
-X x = goo(); // calls move constructor version X(X&& rhs) because the thing on
+X&& foo();
+X x = foo(); // calls move constructor version X(X&& rhs) because the thing on
             // the right hand side has no name
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -98,7 +101,7 @@ Base(Base&& rhs); // move semantics
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If we do like following in derived class it is not right
+If we do like following in derived class its not wrong per say but will invoke copy constructor
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 class Derived : public Base
