@@ -9,7 +9,8 @@ categories: technical post
 
 **Introduction**
 =====================================================================================================================================
-Before actually looking into "what is rvalue and rvalue references" are we should look into what problem they are trying to solve.
+An lvalue is an expression that refers to a memory location and allows us to take the address of that memory location via the & operator. An rvalue is an expression that is not an lvalue.
+Before actually looking into "what is rvalue references" are we should look into what problem they are trying to solve.
 
 **Implementing Move Semantics**
 =====================================================================================================================================
@@ -27,7 +28,7 @@ X& X::operator=(X const& rhs)
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**Note:** operator= is accepting & of x.
+**Note:** operator= is accepting reference(&) of x.
 
 Now lets see what happens to following code with above declared operator=
 
@@ -40,23 +41,24 @@ obj = foo(); ---> (1)
 
 (1) above is converted to call like **obj.=(foo())**.
 
-As return value of foo() is passed as parameter to operator= and we cant take address of return value of function.
-So its rvalue( dont forget we dont dont yet have rvalue references).
+We cant take address of return value of foo() hence it is rvalue.
+This return value of foo() needs to be passed as parameter to operator=.
+We cant directly do it because, we cant take reference of return value of foo() (Remember we dont yet have rvalue references).
 So following thing will happen
 
-a. tmp object will be created and return value of foo will be copied into it and = will be called with ref to tmp.
+**a.** tmp object will be created and return value of foo will be copied into it and operator= will be called with ref to tmp.
 
-b. Delete resources held by this (obj)
+**b.** Delete resources held by this (obj)
 
-c. Copy resources from tmp to obj
+**c.** Copy resources from tmp to obj
 
-d. Destruct tmp obj
+**d.** Destruct tmp obj
 
 But we have return value of foo() and obj is in hand.
 So, can we somehow avoid this tmp creation and init x directly with return value of foo()?
 
 **Note:** 
-we were not able to call operator= as operator= as it takes reference as input.
+we were not able to call operator= as it takes reference as input.
 But, foo() is rvalue and we dont have rvalue references yet.
 
 Here comes to our rescue 'rvalue references'.
@@ -158,11 +160,11 @@ We will see details about RVO/NRVO in next series of articles.
 =====================================================================================================================================
 Move constructor will be called in following cases 
 
-a. Initialization: T a = std::move(b); or T a(std::move(b));, where b is of type T;
+**a.** Initialization: T a = std::move(b); or T a(std::move(b));, where b is of type T;
 
-b. Function argument passing: f(std::move(a));, where a is of type T and f is void f(T t);
+**b.** Function argument passing: f(std::move(a));, where a is of type T and f is void f(T t);
 
-c. Function return: return a; inside a function such as T f(), where a is of type T which has a move constructor.
+**c.** Function return: return a; inside a function such as T f(), where a is of type T which has a move constructor.
 
 **Note:** 
 Point (c) will happend only if there is no RVO or NRVO done by compiler.
