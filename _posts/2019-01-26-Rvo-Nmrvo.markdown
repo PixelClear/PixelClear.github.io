@@ -1,0 +1,145 @@
+---
+layout: post
+title:  "RVO, NMRVO and Copy Elision!!"
+date:   2019-02-08 15:13:36 +0100
+categories: technical post
+---
+
+![Move Semantics]({{ site.url }}/assets/cpp.jpg){:class="img-responsive"}
+
+**Introduction**
+=====================================================================================================================================
+In this article though not related directly to move semantics or rvalue reference we will be seeing some optimization based on moving temporary objects.
+
+**Return Value Optimization (RVO)**
+=====================================================================================================================================
+When ever we write function the major decision that we need to make is to return object by **value** or **reference**.
+In the previous C++ versions (prior C++11) it was adviced to return by reference.
+If returned by value following flow happened consider following code
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+T f()
+{
+    //Some code ....
+    return T(...);
+}
+
+with call 
+
+T obj = f();
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+There are three objects created 
+
+**a.** First object in return statement inside function which is temporary lets call it t1.
+
+**b.** Then compiler creates temporary object t2 and copies returned object t1 to t2 destructs t2.
+
+**c.** Then t2 is copied to object obj where we are calling f() and t2 is destructed.
+
+**Note:** Compiler might use the copy constructor provided by T or may generate one if not user provided.
+
+Temporary objects are created which triggers constructor and destructor calls. So, returning by value seems to be heavy operation.
+With C++11 and move semantics compiler was allowed to do optimization and it can get rid of this two temporary object and can initialize obj direction with
+return value of f().
+
+**Important thing to remember:**
+**a.** C++11 compiler was left with choice to do RVO. If it chose not to RVO still internally move constructor will be used to do optimization.
+
+**b.** If move constructor is not available then copy constructor will be used for the job.
+
+**c.** If compiler does RVO it wont call move or copy constructor even if they have any side effects on object being created.
+
+**d.** Only thing to remember is object must be contructed on return statement.
+
+**Named Return Value Optimization (NRVO)**
+=====================================================================================================================================
+NRVO makes compiler to optimized even when we return objects that are created inside function and has name. Consider following code
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+T f()
+{
+   T obj;
+   
+   return obj;
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The only thing to remember when writing function with multiple return paths is try returning same object from all return paths.
+This makes compiler try for optimization. Consider following code
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+T f()
+{
+  T obj;
+  
+  if()
+     return obj;
+
+  return obj;	 
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Copy Elision**
+=====================================================================================================================================
+Copy elision is optimization performed by the compiler which avoids uneccessary copy of temporary objects.
+NRVO and RVO refers to the situation where an object returned by value from a method has its copy elided.
+Some other places where copy elision may happen is 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+class Base
+{
+//......................
+Base(Base const & rhs); // non-move semantics
+Base(Base&& rhs); // move semantics
+//.......................
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+If we do like following in derived class its not wrong per say but will invoke copy constructor
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+lass Temp {
+public:
+  Temp();
+  ~Temp();
+  Temp(const Temp&);
+};
+
+void foo(Temp t);
+
+foo(Thing());
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Here object is being passed by value hence compiler may do copy elision.
+Similarly when exception are thrown and caught by values can be place to optimize like in following case
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+class Temp {
+public:
+  Temp();
+  ~Temp();
+};
+
+void foo()
+{
+ Temp t;
+ throw t;
+}
+
+int main()
+{
+ try{
+   foo();
+ }
+ catch(Temp t){
+ }
+}
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Important things to remember:**
+**a.** Copy elision is guranteed in C++17 by compiler if all criteria for optimization are met.
+**b.** No move and copy constructor will be called even if they have observable side effects when this kind of optimization is done.
+       This point is particularly important and you should not write some very important logic in move or copy constructor or should not based your logic on assumption that constructors will always be called.
+       Any ways such code is not portable.
