@@ -9,13 +9,15 @@ categories: technical post
 
 **Introduction**
 =====================================================================================================================================
-In this article though not related directly to move semantics or rvalue reference we will be seeing some optimization based on moving temporary objects.
+This article though not related directly to move semantics or rvalue reference we will be seeing some optimization based on moving temporary objects.
 
 **Return Value Optimization (RVO)**
 =====================================================================================================================================
 When ever we write function the major decision that we need to make is to return object by **value** or **reference**.
 In the previous C++ versions (prior C++11) it was adviced to return by reference.
-If returned by value following flow happened consider following code
+If returned by value following flow happened 
+
+consider following code
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 T f()
@@ -40,10 +42,11 @@ There are three objects created
 **Note:** Compiler might use the copy constructor provided by T or may generate one if not user provided.
 
 Temporary objects are created which triggers constructor and destructor calls. So, returning by value seems to be heavy operation.
-With C++11 and move semantics compiler was allowed to do optimization and it can get rid of this two temporary object and can initialize obj direction with
+With C++11 and move semantics compiler was allowed to do optimization and it can get rid of this two temporary objects and can initialize objects directly with
 return value of f().
 
 **Important thing to remember:**
+
 **a.** C++11 compiler was left with choice to do RVO. If it chose not to RVO still internally move constructor will be used to do optimization.
 
 **b.** If move constructor is not available then copy constructor will be used for the job.
@@ -65,8 +68,10 @@ T f()
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The only thing to remember when writing function with multiple return paths is try returning same object from all return paths.
-This makes compiler try for optimization. Consider following code
+The only thing to remember when writing function with **multiple return paths** is try returning same object from all return paths.
+This makes compiler try for optimization. 
+
+Consider following code
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 T f()
@@ -87,19 +92,7 @@ NRVO and RVO refers to the situation where an object returned by value from a me
 Some other places where copy elision may happen is 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-class Base
-{
-//......................
-Base(Base const & rhs); // non-move semantics
-Base(Base&& rhs); // move semantics
-//.......................
-}
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-If we do like following in derived class its not wrong per say but will invoke copy constructor
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-lass Temp {
+class Temp {
 public:
   Temp();
   ~Temp();
@@ -139,6 +132,7 @@ int main()
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 **Important things to remember:**
+
 **a.** Copy elision is guranteed in C++17 by compiler if all criteria for optimization are met.
 **b.** No move and copy constructor will be called even if they have observable side effects when this kind of optimization is done.
        This point is particularly important and you should not write some very important logic in move or copy constructor or should not based your logic on assumption that constructors will always be called.
