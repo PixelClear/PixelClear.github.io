@@ -134,6 +134,7 @@ int main()
 **Important things to remember:**
 
 **a.** Copy elision is guranteed in C++17 by compiler if all criteria for optimization are met.
+
 **b.** No move and copy constructor will be called even if they have observable side effects when this kind of optimization is done.
        This point is particularly important and you should not write some very important logic in move or copy constructor or should not based your logic on assumption that constructors will always be called.
        Any ways such code is not portable.
