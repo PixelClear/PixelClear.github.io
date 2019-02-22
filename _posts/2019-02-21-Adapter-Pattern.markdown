@@ -25,7 +25,11 @@ class Bird
  void fly() = 0;
 }
 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 Then we go on making public inheritance as we know eagle is bird. So we have 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 class Eagle : public Bird 
 {
@@ -39,10 +43,10 @@ public:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Now lets think of extending this library as many people wants to see different birds behaviours (pun intended).
-We now also have penguines but if we consider penguines we have problem. The interface of bird is not compatible with penguines as penguines dont fly they swim.
-So one solution we might think of is adding swim() method to Bird. But that kind of makes our design look bad as some of the classes inheriting Bird will
-implement fly() and some will implement swim(). We loose consistency and we can no longer keep Bird strict interface as collection of pure virtual functions.
+Now lets think of extending this library because many people wants to see different birds behaviours (pun intended).
+We now also have penguines but, if we consider penguines we have problem. The interface of bird is not compatible with penguines as penguines dont fly they swim.
+So one solution we might think of is adding **swim()** method to Bird. But that kind of makes our design look bad as some of the classes inheriting Bird will
+implement **fly()** and some will implement **swim()**. We loose consistency and we can no longer keep Bird strict interface as collection of pure virtual functions.
 Something like following will happen 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -86,7 +90,8 @@ class Penguine : public Bird
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-In cases like this when we have type which is not consistent with the interface we might use adapter pattern.
+In cases like above we have type which is not consistent with the interface.
+The solution might be to use adapter pattern.
 Lets see how we can do that using template and function pointer
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
