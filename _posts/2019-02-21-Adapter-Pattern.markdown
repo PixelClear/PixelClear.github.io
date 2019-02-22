@@ -162,6 +162,6 @@ int main()
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-If you see above we have not consistent interface and also we dont have much hierarchy of inheritance.
+If you see above we have consistent interface and also we dont have much hierarchy of inheritance.
 We can add as much variety of birds classes as we want without disturbing the the interface.
 I hope this convinces us on power of this pattern.
