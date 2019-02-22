@@ -22,7 +22,7 @@ class Bird
 {
  public: 
  
- void fly() = 0;
+ virtual void fly() = 0;
 }
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -55,8 +55,8 @@ class Bird
 {
  public: 
  
- void fly() = 0;
- void swim() = 0;
+ virtual void fly() = 0;
+ virtual void swim() = 0;
 }
 
 class Eagle : public Bird
