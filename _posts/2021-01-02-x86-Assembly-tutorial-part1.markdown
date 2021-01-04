@@ -25,29 +25,30 @@ So without further ado lets get started.
 Assembly language is abstraction layer on machine code instructions. Assembly language has opcodes for machine codes instructions. 
 Special program called as assembler will take this program and do necessary conversions.
 
-<ins>**Simplest Program Execution Model ?**</ins> 
+<ins>**Simplest Program Execution Model**</ins> 
 =====================================================================================================================================
 
-Below image depicts simplest representation for Von-Neuman/Stored program architecture.
+Below image depicts simplest representation for Von-Neuman/Stored program architecture.This architecture proposed that the instructions that operate on data will be 
+present in same memory as data.
 
 ![Architecture]({{ site.url }}/assets/vn-architecture.jpg){:class="img-responsive"}
 
 
-  * Control unit makes the control bus to fetch instruction. It then decodes the instruction into micro-code this is actually code that drives the signals to gate levels.
-  * The decoded instruction is then passed to Arithmetic/Execution unit. It makes data bus to fetch the  data and store it in registers.
-  * From instruction pointer control and execution unit knows the address of the current instruction/ data.
-  * This address is sent on address bus to tell RAM which data we are interested in and then, data bus and control bus fetches the actual data.
+  * Control unit makes the control bus to fetch instruction. It then decodes the instruction into micro-code. Micro-code is actually code that drives the signals to gate levels.
+  * The decoded instruction is then passed to Arithmetic/Execution unit. This unit makes data bus to fetch the data and store it in registers.
+  * Referring to Instruction Pointer (IP) control and execution unit knows the address of the current instruction/ data.
+  * This address is sent on address bus to tell RAM which data we are interested in and then, data bus and control bus fetches the actual data or instructions.
 	
 at the end of this tutorial I will add one more section explaining more on control unit components.
 Out of order execution, branch prediction, retirement unit and many components are not included in this section for simplicity.
-Cache is one more memory that is omitted from above figure again for same reason and will be explained later in separate sections.
+Cache is one more memory that is omitted from above figure for same reason and will be explained later in separate sections.
 
 <ins>**Types of Registers**</ins> 
 =====================================================================================================================================
 
 Now we understand RAM is where data resides but, RAM has much higher latency than CPU. So, we have added on chip memory known as registers.
 Assume we did not have registers, in that case when cpu need to read the data multiple times each time it has to wait for RAM to complete the operation and give 
-the data back to CPU. This will waste CPU cycles hence registers.
+the data back to CPU. This will waste CPU cycles hence registers are important.
 
     • General Purpose
 
@@ -56,7 +57,7 @@ the data back to CPU. This will waste CPU cycles hence registers.
       ECX - Counter for string and loop operations
       EDX - I/O pointer 
       EDI - Data pointer for destination in string operation
-      ESI  - Data pointer for source in string operation
+      ESI - Data pointer for source in string operation
       ESP - Stack pointer
       EBP - Stack Data pointer 
 		   
@@ -66,11 +67,11 @@ the data back to CPU. This will waste CPU cycles hence registers.
 
 	• Segment Registers
 	
-	  Most of the platforms we are using uses segmented memory model.
-	  Each program when launched is process that is divided into different
-	  segments for each data, instruction and stack. Logical address is generated
-      which will contain the segment address and offset inside segment for
-      particular instruction of the data. Segment registers hold the address of
+	  Most of the platforms we are using has segmented memory model.
+	  Each program when launched is referred as process that is divided into different
+	  segments for each data, instruction and stack. These segments are actually memory areas in RAM.
+	  Every location has logical address. This logical address contain the segment address and offset 
+	  inside segment for particular instruction or data. Segment registers hold starting address of
       specific segments.
 
       CS - Code Segment 
@@ -79,17 +80,19 @@ the data back to CPU. This will waste CPU cycles hence registers.
       ES/FS/GS - Extra segment pointer
 		   
 **Note** : So when ever process is loaded its segments start address will be loaded 
-       into these registers. This is part of context initialization for process.
+           into these registers. This is part of context initialization for process.
 
 	• Instruction Pointer Register
 	
 	  EIP points to next instruction in code segment to be executed. Program
-      cant modify the address inside this register directly but we cant control
+      cant modify the address inside this register directly but, we cant control
       it as side effect of executing instructions like jump.
 
 	• Control Registers 
 
-      These registers status and operating mode of processor.
+      These registers hold values indicating status and operating mode of processor.
+	  As result of execution of instructions these registers will be updated and can be later read to decide 
+	  if the instruction succeeded or failed.
       There are multiple registers I am listing just important ones here.
 
       CR0 - control the states of processor 
@@ -97,7 +100,7 @@ the data back to CPU. This will waste CPU cycles hence registers.
       CR4 - Flags enabling cpu features.
 		   
 **Note** : control registers cant be modified directly this have to be done using general
-       purpose register.
+           purpose register.
 
 	• Flags
 	
@@ -122,7 +125,7 @@ We will be using GNU tool chain for this tutorial.
 >  * **kdbg**     : UI front end for gdb
 
 I am using WSL with ubuntu installed as windows linux subsystem. 	
-Please make sure your system has these installed. 
+Please make sure your system has these tools installed. 
 If your system doesn’t have these then please follow **"Installation"** section for details.
 
 **Note** : I will include special instruction for using UI applications in WSL setup.
@@ -163,41 +166,44 @@ _start:
 Lets breakdown every part of above program to understand it in more details.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-**.section .data**   
-**output:**
-        **.ascii "Hello World..."**
+.section .data   
+output:
+        .ascii "Hello World..."
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Data section starts here. We declare string names output that has value hello world stored in it.
+Data section starts here. We declare string output that has value hello world stored in it.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-**.section .text**
-**.globl _start**    
+.section .text
+.globl _start    
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-_start is the starting function like main. _start is special label that is associated with entry point function.
-.globl directive telling linker that we want to export this function so it will be available for modules outside 
-this file. LibC actually calls this entry point hence it is important to export this _Start function.
+_start is the entry point function like main. _start is special label that is associated with entry point function.
+.globl directive tells linker that we want to export this function so, it will be available for modules outside 
+this file. LibC actually calls this entry point hence, it is important to export this _start function.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-**_start:**
-        **movl $4, %eax**   
-        **movl $1, %ebx**           
-        **movl $output, %ecx**       
-		**movl $14, %edx**                    
-        **int $0x80**                  
+_start:
+        movl $4, %eax   
+        movl $1, %ebx           
+        movl $output, %ecx       
+		movl $14, %edx                    
+        int $0x80                  
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
 
 We want to print the value to console. Hence we are using system calls for that purpose. Each Linux system call is
-given unique number. We are using 4 which is sys_write system call.Then we want to put this string to stdout. Linux
-treats everything as file. So 1 is file descriptor for stdout.So we fill the registers will following values 
+given unique number. We are using 4 which is **sys_write()** system call.Then we want to put this string to stdout. Linux
+treats everything as file. 1 is file descriptor for stdout.So, we fill the registers with following values 
 
 >    EAX - system call number 
+
 >    EBX - file descriptor number
+
 >    ECX - actual string
+
 >    EDX - length of string
 
-After loading proper values inside registers we issue software interrupt using int instruction.
+After loading proper values inside registers we issue software interrupt using **int** instruction.
 There are software interrupt and hardware interrupts. Hardware interrupts have higher priority than software interrupts. 
 Even within software interrupts there is priority.
 
@@ -209,20 +215,21 @@ onto interrupt stack, clear interrupt source entry, start and finish execution o
 execution of ISR started.
 											   
 There is kernel mode stack that is allocated per process. When ever we want to execute ISR it wont get its own stack but it will use
-the kernel mode stack of process that invoked it.
+the kernel mode stack of process that invoked it. Please note each process has user mode stack and kernel mode stack allocated as part of per process 
+data structure by kernel.
 
 This ISR will read the values is EAX and call the sys_write system call passing it other values from EBX, ECX, EDX as arguments 
-and hence we get out string printed on console.
+and hence, we get out string printed on console.
 
 **Note** : Please refer to **Miscellaneous** to get some details on how Harware Interrupts are handled.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       
-**movl $1, %eax**  
-**movl $0, %ebx**   
-**int $0x80**
+movl $1, %eax
+movl $0, %ebx   
+int $0x80
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       
 
-In this part we are simply calling sys_exit system call to complete the execution of our program.
+In this part we are simply calling **sys_exit()** system call to complete the execution of our program.
 
 <ins>**Compiling and Running**</ins> 
 =====================================================================================================================================
@@ -241,13 +248,14 @@ Use following command to run
 
 >  **./HelloWorld**
 
-**Note** : Please see options **--32** and **-m elf_i386** used to build in 32 bit mode.
+**Note** : Please see options **--32** and **-m elf_i386** used to build in 32 bit mode. Mostly on modern systems you will have gcc , as ,ld which are
+           64 bit compatible. So, you will have to specifically tell these tools to generate 32 bit output.
 
 <ins>**Debugging HelloWorld**</ins> 
 =====================================================================================================================================
 
-We need to have debug symbols embedded in out exe in order to debug it.
-Hence we use following symbols so assembler embeds those special symbols in object file.
+We need to have debug symbols embedded in our exe in order to debug it.
+Hence, we use following commands so assembler embeds those special symbols in object file.
 
 >  **as --32 -gstabs -o HelloWorld.o HelloWorld.s**
 >
@@ -301,7 +309,7 @@ main:
         call    printf                      -------------------------> Call to printf.
         add     esp, 16                     -------------------------> Restore the stack pointer. On x86 cpus stack grows downwards. This means when ever we use push 
         mov     eax, 0                                                 to place the parameters on stack the stack pointer is decremented. Hence to restore the stack   
-        mov     ecx, DWORD PTR [ebp-4]                                 we add to stack pointer with appropriate size of data that was stored in stack.
+        mov     ecx, DWORD PTR [ebp-4]                                 we add to stack pointer with appropriate size of data that was stored on stack.
         leave
         lea     esp, [ecx-4]
         ret
@@ -406,8 +414,8 @@ Now you are set to use any function from LibC in your assembly code.
 	  
 • <ins>**Hardware Interrupt Handling**</ins>
 	    
-   CPU gives time slice for each process to execute in round robin fashion. When CPU is executing a process and its time slice finishes then the clock send hardware interrupt to CPU.
-   Clock hardware interrupt is at highest priority so CPU will start executing its ISR and its ISR will do the task of context saving for current process and load the context of next
+   CPU gives time slice for each process to execute in round robin fashion. When CPU is executing a process and its time slice finishes then the clock sends hardware interrupt to CPU.
+   Clock hardware interrupt is at highest priority so, CPU will start executing its ISR and its ISR will do the task of context saving for current process and load the context of next
    scheduled process. This process generally is called as context switch.
 		
    CPU at end of execution of each instruction will see the interrupt queue to see if it has any high priority interrupt pending if so it will start handling it.
