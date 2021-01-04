@@ -336,6 +336,8 @@ Now you are set to use any function from libc in your assembly code.
 **Installation** 
 =====================================================================================================================================
 
+<!-- language: lang-none -->
+
   • Installing GNU Tool Chain
 	
     If your ubuntu installation doesnt have any development tools mentioned in above section then you can install them.
@@ -382,6 +384,8 @@ Now you are set to use any function from libc in your assembly code.
 
 **Miscellaneous** 
 =====================================================================================================================================
+
+<!-- language: lang-none -->
 	  
   • Hardware Interrupt Handling
 	    
