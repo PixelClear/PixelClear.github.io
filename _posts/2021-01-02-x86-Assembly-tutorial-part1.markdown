@@ -218,7 +218,7 @@ There is kernel mode stack that is allocated per process. When ever we want to e
 the kernel mode stack of process that invoked it. Please note each process has user mode stack and kernel mode stack allocated as part of per process 
 data structure by kernel.
 
-This ISR will read the values is EAX and call the sys_write system call passing it other values from EBX, ECX, EDX as arguments 
+This ISR will read the values is EAX and call the **sys_write()** system call passing it other values from EBX, ECX, EDX as arguments 
 and hence, we get out string printed on console.
 
 **Note** : Please refer to **Miscellaneous** to get some details on how Harware Interrupts are handled.
