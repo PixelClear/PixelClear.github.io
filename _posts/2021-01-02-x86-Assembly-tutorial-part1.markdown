@@ -336,13 +336,12 @@ Now you are set to use any function from libc in your assembly code.
 **Installation** 
 =====================================================================================================================================
 
-  • Installing GNU Tool Chain
-	
->   If your ubuntu installation doesnt have any development tools mentioned in above section then you can install them.
->   Tools like as, ld, objdump, gProf are part of binutils package which can be installed using following command
+• Installing GNU Tool Chain
+  If your ubuntu installation doesnt have any development tools mentioned in above section then you can install them.
+  Tools like as, ld, objdump, gProf are part of binutils package which can be installed using following command
 
->    **sudo apt-get update -y**
->    **sudo apt-get install -y binutils-common**
+  **sudo apt-get update -y**
+  **sudo apt-get install -y binutils-common**
 		   
   • Installing GCC
 	
