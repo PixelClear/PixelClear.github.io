@@ -336,10 +336,9 @@ Now you are set to use any function from libc in your assembly code.
 **Installation** 
 =====================================================================================================================================
 
-<!-- language: lang-none -->
-
   • Installing GNU Tool Chain
 	
+	<!-- language: lang-none -->
     If your ubuntu installation doesnt have any development tools mentioned in above section then you can install them.
     Tools like as, ld, objdump, gProf are part of binutils package which can be installed using following command
 
@@ -348,12 +347,14 @@ Now you are set to use any function from libc in your assembly code.
 		   
   • Installing GCC
 	
+	<!-- language: lang-none -->
     You will have to install gcc seperately by installing build-essential package 
 	  
      **sudo apt-get install -y build-essential**
 		   
   • Installing kdgb 
 	
+	<!-- language: lang-none -->
     Below are the steps to install kdgb on WSL and how to use it using vcxsrv ( X Server).
 	  
      * **sudo apt install extra-cmake-modules**
@@ -370,8 +371,9 @@ Now you are set to use any function from libc in your assembly code.
 	  
   • Using kdgb on WSL
 	
+	<!-- language: lang-none -->
     To use applications with GUI on WSL follow below steps.
-	  
+	  <!-- language: lang-none -->
      * On Windows (Host Side) install X server vcxsrv.
      * Launch it with default option. ( Just make sure to check box saying **"Disable Access Control"** and put -ac in command line for allowing public access)
      * On WSL command prompt execute following command that will set the display number (You can also write below command in your .bashrc in case you dont want to do it everytime)
@@ -385,7 +387,7 @@ Now you are set to use any function from libc in your assembly code.
 **Miscellaneous** 
 =====================================================================================================================================
 
-<!-- language: lang-none -->
+
 	  
   • Hardware Interrupt Handling
 	    
