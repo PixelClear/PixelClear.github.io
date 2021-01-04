@@ -329,6 +329,7 @@ Use following commands to compiler and then link dynamically to libc.
   **ld -m elf_i386 -dynamic-linker /lib/ld-linux.so.2 -o HelloWorld -lc HelloWorld.o**
 
 Note : Please make sure you have 32 bit version of libc installed. If you dont have it please use following command to install it.
+
        **sudo apt-get install build-essential libc6-dev-i386**
 	   
 Now you are set to use any function from libc in your assembly code.
@@ -338,70 +339,78 @@ Now you are set to use any function from libc in your assembly code.
 
 • **Installing GNU Tool Chain**
 
-  If your ubuntu installation doesnt have any development tools mentioned in above section then you can install them.
-  Tools like as, ld, objdump, gProf are part of binutils package which can be installed using following command
+   If your ubuntu installation doesnt have any development tools mentioned in above section then you can install them.
+   Tools like as, ld, objdump, gProf are part of binutils package which can be installed using following command
 
-  **sudo apt-get update -y**
-  **sudo apt-get install -y binutils-common**
+   **sudo apt-get update -y**
+   
+   **sudo apt-get install -y binutils-common**
 		   
-  • Installing GCC
+• **Installing GCC**
 	
-    You will have to install gcc seperately by installing build-essential package 
+   You will have to install gcc seperately by installing build-essential package 
 	  
-     **sudo apt-get install -y build-essential**
+   **sudo apt-get install -y build-essential**
 		   
-  • Installing kdgb 
+• **Installing kdgb** 
 	
-    Below are the steps to install kdgb on WSL and how to use it using vcxsrv ( X Server).
+   Below are the steps to install kdgb on WSL and how to use it using vcxsrv ( X Server).
 	  
-     * **sudo apt install extra-cmake-modules**
-     * **git clone -b maint https://github.com/j6t/kdbg.git**
-     * **cd kdbg**
-     * **git tag -l** 
-     * **git checkout kdbg-3.0.1**
-     * **sudo apt install libkf5iconthemes-dev libkf5xmlgui-dev**
-     * **sudo apt-get install -y gettext**
-     * **cmake .**
-     * **sudo make install**
+   * **sudo apt install extra-cmake-modules**
+   
+   * **git clone -b maint https://github.com/j6t/kdbg.git**
+   
+   * **cd kdbg**
+   
+   * **git tag -l** 
+   
+   * **git checkout kdbg-3.0.1**
+   
+   * **sudo apt install libkf5iconthemes-dev libkf5xmlgui-dev**
+   
+   * **sudo apt-get install -y gettext**
+   
+   * **cmake .**
+   
+   * **sudo make install**
 
-    After following above steps kdbg is not installed on your system. 
+   After following above steps kdbg is not installed on your system. 
 	  
-  • Using kdgb on WSL
+• Using kdgb on WSL
 	
-<!-- language: lang-none -->
-    To use applications with GUI on WSL follow below steps.
-	  <!-- language: lang-none -->
-     * On Windows (Host Side) install X server vcxsrv.
-     * Launch it with default option. ( Just make sure to check box saying **"Disable Access Control"** and put -ac in command line for allowing public access)
-     * On WSL command prompt execute following command that will set the display number (You can also write below command in your .bashrc in case you dont want to do it everytime)
+  To use applications with GUI on WSL follow below steps.
+	
+   * On Windows (Host Side) install X server vcxsrv.
+   
+   * Launch it with default option. ( Just make sure to check box saying **"Disable Access Control"** and put -ac in command line for allowing public access)
+   
+   * On WSL command prompt execute following command that will set the display number (You can also write below command in your .bashrc in case you dont want to do it everytime)
 		
-       **export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0** 
+     **export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0** 
 		
-     * Now you are good to go!
+   * Now you are good to go!
 
-    Following above steps when ever you will launch the kdgb you will see the GUI and you can debug the application.
+  Following above steps when ever you will launch the kdgb you will see the GUI and you can debug the application.
 
 **Miscellaneous** 
 =====================================================================================================================================
-
-
 	  
-  • Hardware Interrupt Handling
+• **Hardware Interrupt Handling**
 	    
-    CPU gives time slice for each process to execute in round robin fashion. When CPU is executing a process and its time slice finishes then the clock send hardware interrupt to CPU.
-    Clock hardware interrupt is at highest priority so CPU will start executing its ISR and its ISR will do the task of context saving for current process and load the context of next
-    scheduled process. This process generally is called as context switch.
+   CPU gives time slice for each process to execute in round robin fashion. When CPU is executing a process and its time slice finishes then the clock send hardware interrupt to CPU.
+   Clock hardware interrupt is at highest priority so CPU will start executing its ISR and its ISR will do the task of context saving for current process and load the context of next
+   scheduled process. This process generally is called as context switch.
 		
-    CPU at end of execution of each instruction will see the interrupt queue to see if it has any high priority interrupt pending if so it will start handling it.
+   CPU at end of execution of each instruction will see the interrupt queue to see if it has any high priority interrupt pending if so it will start handling it.
 		
-  • Big/Little Endian
+• **Big/Little Endian**
 	  
-    These are ways to store numbers or data in memory addresses. Let’s use a 16-bit word as example, (0xABCD) 16 in this case. Let’s also assume we are storing this word starting at 
-    address 0x4000.
+   These are ways to store numbers or data in memory addresses. Let’s use a 16-bit word as example, (0xABCD) 16 in this case. Let’s also assume we are storing this word starting at 
+   address 0x4000.
 		
-    Little Endian :
+   Little Endian :
 	    
-    Store LSB at smallest memory location.
+   Store LSB at smallest memory location.
 		
 	    -------------------------------
 	   |               |               |  
@@ -410,9 +419,9 @@ Now you are set to use any function from libc in your assembly code.
             0x4000          0x4001  
 						 
 						 
-    Big Endian :
+   Big Endian :
 		
-    Store MSB at smallest memory location.
+   Store MSB at smallest memory location.
 		
 	    -------------------------------
 	   |               |               |  
@@ -421,4 +430,4 @@ Now you are set to use any function from libc in your assembly code.
             0x4000          0x4001
 						 
 						 
-    This is important when we will deal with strings. How we store them and read them back will be affected by this.
+   This is important when we will deal with strings. How we store them and read them back will be affected by this.
