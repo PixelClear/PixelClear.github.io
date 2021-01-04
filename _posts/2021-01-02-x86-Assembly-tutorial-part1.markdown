@@ -158,53 +158,69 @@ _start:
         int $0x80
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Lets breakdown every part of above program to understand it in more details.
 
-**.section .data**  -------------------------> Data section starts here. We declare string names output that has value hello world stored in it.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+**.section .data**   
 **output:**
         **.ascii "Hello World..."**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Data section starts here. We declare string names output that has value hello world stored in it.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **.section .text**
+**.globl _start**    
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-**.globl _start**   -------------------------> _start is the starting function like main. _start is special label that is associated with entry point function.
-                                               .globl directive telling linker that we want to export this function so it will be available for modules outside 
-											   this file. LibC actually calls this entry point hence it is important to export this _Start function.
+_start is the starting function like main. _start is special label that is associated with entry point function.
+.globl directive telling linker that we want to export this function so it will be available for modules outside 
+this file. LibC actually calls this entry point hence it is important to export this _Start function.
 
-
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 **_start:**
-        **movl $4, %eax**   --------      
-        **movl $1, %ebx**           |
-        **movl $output, %ecx**      |--------> We want to print the value to console. Hence we are using system calls for that purpose. Each Linux system call is 
-		**movl $14, %edx**          |          given unique number. We are using 4 which is sys_write system call.Then we want to put this string to stdout. Linux   
-        **int $0x80**       --------           treats everything as file. So 1 is file descriptor for stdout.So we fill the registers will following values
-											    
+        **movl $4, %eax**   
+        **movl $1, %ebx**           
+        **movl $output, %ecx**       
+		**movl $14, %edx**                    
+        **int $0x80**                  
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	
 
-                                                    EAX - system call number 
-                                                    EBX - file descriptor number
-                                                    ECX - actual string
-                                                    EDX - length of string
+We want to print the value to console. Hence we are using system calls for that purpose. Each Linux system call is
+given unique number. We are using 4 which is sys_write system call.Then we want to put this string to stdout. Linux
+treats everything as file. So 1 is file descriptor for stdout.So we fill the registers will following values 
 
-                                               After loading proper values inside registers we issue software interrupt using int instruction.
-                                               There are software interrupt and hardware interrupts. Hardware interrupts have higher priority than software interrupts. 
-											   Even within software interrupts there is priority.
+    EAX - system call number 
+    EBX - file descriptor number
+    ECX - actual string
+    EDX - length of string
 
-                                               When process issues software interrupt it will be put in queue and CPU sees if any interrupts are pending in interrupt queue.
-										       It will refer to interrupt table (Interrupt Vector) which has address for interrupt service routine (ISR) corresponding to the interrupt received.
+After loading proper values inside registers we issue software interrupt using int instruction.
+There are software interrupt and hardware interrupts. Hardware interrupts have higher priority than software interrupts. 
+Even within software interrupts there is priority.
 
-                                               Before it starts executing the ISR it will store the current context (register values for process currently being executed) 
-											   onto interrupt stack, clear interrupt source entry, start and finish execution of ISR and reset the context as it was before 
-											   execution of ISR started.
+When process issues software interrupt it will be put in queue and CPU sees if any interrupts are pending in interrupt queue.
+It will refer to interrupt table (Interrupt Vector) which has address for interrupt service routine (ISR) corresponding to the interrupt received.
+
+Before it starts executing the ISR it will store the current context (register values for process currently being executed) 
+onto interrupt stack, clear interrupt source entry, start and finish execution of ISR and reset the context as it was before 
+execution of ISR started.
 											   
-											   There is kernel mode stack that is allocated per process. When ever we want to execute ISR it wont get its own stack but it will use
-											   the kernel mode stack of process that invoked it.
+There is kernel mode stack that is allocated per process. When ever we want to execute ISR it wont get its own stack but it will use
+the kernel mode stack of process that invoked it.
 
-                                               This ISR will read the values is EAX and call the sys_write system call passing it other values from EBX, ECX, EDX as arguments 
-											   and hence we get out string printed on console.
-											   
-											   Note : Please refer to **Miscellaneous** to get some details on how Harware Interrupts are handled.
-       
-        **movl $1, %eax**  
-        **movl $0, %ebx**   -----------------> In this part we are simply calling sys_exit system call to complete the execution of our program.
-        **int $0x80**
+This ISR will read the values is EAX and call the sys_write system call passing it other values from EBX, ECX, EDX as arguments 
+and hence we get out string printed on console.
+
+Note : Please refer to **Miscellaneous** to get some details on how Harware Interrupts are handled.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       
+**movl $1, %eax**  
+**movl $0, %ebx**   
+**int $0x80**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~       
+
+In this part we are simply calling sys_exit system call to complete the execution of our program.
 
 **Compiling and Running** 
 =====================================================================================================================================
@@ -213,15 +229,15 @@ This is the most exciting part (If you dont get any errors !).
 
 Use following command to build object file
 
-	**as --32 -o HelloWorld.o HelloWorld.s**
+  **as --32 -o HelloWorld.o HelloWorld.s**
 	
 Use following command to link the object file and get executable
 
-	**ld -m elf_i386 -o HelloWorld HelloWorld.o**
+  **ld -m elf_i386 -o HelloWorld HelloWorld.o**
 
 Use following command to run 
 
-    **./HelloWorld**
+  **./HelloWorld**
 
 Note : Please see options **--32** and **-m elf_i386** used to build in 32 bit mode.
 
@@ -231,13 +247,13 @@ Note : Please see options **--32** and **-m elf_i386** used to build in 32 bit m
 We need to have debug symbols embedded in out exe in order to debug it.
 Hence we use following symbols so assembler embeds those special symbols in object file.
 
-	ss --32 -gstabs -o HelloWorld.o HelloWorld.s
-	ld -m elf_i386 -o HelloWorld HelloWorld.o
+  **as --32 -gstabs -o HelloWorld.o HelloWorld.s**
+  **ld -m elf_i386 -o HelloWorld HelloWorld.o**
 	
 
 As you remember we are using kdbg to debug so run following command 
 
-    kdbg HelloWorld 
+  **kdbg HelloWorld**
 
 You will see below window and as you set breakpoints and step in code you can inspect values in registers and memory locations. If you see in below image, bottom most window on left 
 shows the values in different registers.
@@ -258,7 +274,7 @@ int main() {
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Run command ** gcc -m32 -S HelloWorld.c **. This command will generate HelloWorld.s file.
+Run command **gcc -m32 -S HelloWorld.c**. This command will generate HelloWorld.s file.
 You will see code like below 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -309,96 +325,97 @@ _start:
 
 Use following commands to compiler and then link dynamically to libc.
 
-     **as --32 -o HelloWorld.o HelloWorld.s**
-     **ld -m elf_i386 -dynamic-linker /lib/ld-linux.so.2 -o HelloWorld -lc HelloWorld.o**
+  **as --32 -o HelloWorld.o HelloWorld.s**
+  **ld -m elf_i386 -dynamic-linker /lib/ld-linux.so.2 -o HelloWorld -lc HelloWorld.o**
 
 Note : Please make sure you have 32 bit version of libc installed. If you dont have it please use following command to install it.
-	   **sudo apt-get install build-essential libc6-dev-i386**
+       **sudo apt-get install build-essential libc6-dev-i386**
 	   
 Now you are set to use any function from libc in your assembly code.
 
 **Installation** 
 =====================================================================================================================================
 
-	• Installing GNU Tool Chain
+  • Installing GNU Tool Chain
 	
-	  If your ubuntu installation doesnt have any development tools mentioned in above section then you can install them.
-	  Tools like as, ld, objdump, gProf are part of binutils package which can be installed using following command
+	If your ubuntu installation doesnt have any development tools mentioned in above section then you can install them.
+	Tools like as, ld, objdump, gProf are part of binutils package which can be installed using following command
 	  
-	       **sudo apt-get update -y**
-		   **sudo apt-get install -y binutils-common**
+	  **sudo apt-get update -y**
+      **sudo apt-get install -y binutils-common**
 		   
-	• Installing GCC
+  • Installing GCC
 	
-	  You will have to install gcc seperately by installing build-essential package 
+    You will have to install gcc seperately by installing build-essential package 
 	  
-	       **sudo apt-get install -y build-essential**
+     **sudo apt-get install -y build-essential**
 		   
-	• Installing kdgb 
+  • Installing kdgb 
 	
-	  Below are the steps to install kdgb on WSL and how to use it using vcxsrv ( X Server).
+    Below are the steps to install kdgb on WSL and how to use it using vcxsrv ( X Server).
 	  
-		* **sudo apt install extra-cmake-modules**
-		* **git clone -b maint https://github.com/j6t/kdbg.git**
-		* **cd kdbg**
-		* **git tag -l** 
-		* **git checkout kdbg-3.0.1**
-		* **sudo apt install libkf5iconthemes-dev libkf5xmlgui-dev**
-		* **sudo apt-get install -y gettext**
-		* **cmake .**
-		* **sudo make install**
+    * **sudo apt install extra-cmake-modules**
+    * **git clone -b maint https://github.com/j6t/kdbg.git**
+    * **cd kdbg**
+    * **git tag -l** 
+    * **git checkout kdbg-3.0.1**
+    * **sudo apt install libkf5iconthemes-dev libkf5xmlgui-dev**
+    * **sudo apt-get install -y gettext**
+    * **cmake .**
+    * **sudo make install**
 
       After following above steps kdbg is not installed on your system. 
 	  
-	• Using kdgb on WSL
+  • Using kdgb on WSL
 	
-	  To use applications with GUI on WSL follow below steps.
+    To use applications with GUI on WSL follow below steps.
 	  
-	    * On Windows (Host Side) install X server vcxsrv.
-		* Launch it with default option. ( Just make sure to check box saying **"Disable Access Control"** and put -ac in command line for allowing public access)
-		* On WSL command prompt execute following command that will set the display number (You can also write below command in your .bashrc in case you dont want to do it everytime)
+    * On Windows (Host Side) install X server vcxsrv.
+    * Launch it with default option. ( Just make sure to check box saying **"Disable Access Control"** and put -ac in command line for allowing public access)
+    * On WSL command prompt execute following command that will set the display number (You can also write below command in your .bashrc in case you dont want to do it everytime)
 		
-			**export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0** 
-		* Now you are good to go!
+        **export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0** 
+		
+    * Now you are good to go!
 
-      Following above steps when ever you will launch the kdgb you will see the GUI and you can debug the application.
+    Following above steps when ever you will launch the kdgb you will see the GUI and you can debug the application.
 
 **Miscellaneous** 
 =====================================================================================================================================
 	  
-	  • Hardware Interrupt Handling
+  • Hardware Interrupt Handling
 	    
-		CPU gives time slice for each process to execute in round robin fashion. When CPU is executing a process and its time slice finishes then the clock send hardware interrupt to CPU.
-		Clock hardware interrupt is at highest priority so CPU will start executing its ISR and its ISR will do the task of context saving for current process and load the context of next
-		scheduled process. This process generally is called as context switch.
+    CPU gives time slice for each process to execute in round robin fashion. When CPU is executing a process and its time slice finishes then the clock send hardware interrupt to CPU.
+    Clock hardware interrupt is at highest priority so CPU will start executing its ISR and its ISR will do the task of context saving for current process and load the context of next
+    scheduled process. This process generally is called as context switch.
 		
-		CPU at end of execution of each instruction will see the interrupt queue to see if it has any high priority interrupt pending if so it will start handling it.
+    CPU at end of execution of each instruction will see the interrupt queue to see if it has any high priority interrupt pending if so it will start handling it.
 		
-	  • Big/Little Endian
+  • Big/Little Endian
 	  
-	    These are ways to store numbers or data in memory addresses. Let’s use a 16-bit word as example, (0xABCD) 16 in this case. Let’s also assume we are storing this word starting at 
-		address 0x4000.
+    These are ways to store numbers or data in memory addresses. Let’s use a 16-bit word as example, (0xABCD) 16 in this case. Let’s also assume we are storing this word starting at 
+    address 0x4000.
 		
-		Little Endian :
+    Little Endian :
 	    
-		Store LSB at smallest memory location.
+    Store LSB at smallest memory location.
 		
-		               -------------------------------
-		              |               |               |  
-					  |     CD        |       AB      |
-					   -------------------------------
-					     0x4000          0x4001  
+	    -------------------------------
+	   |               |               |  
+       |     CD        |       AB      |
+        -------------------------------
+            0x4000          0x4001  
 						 
 						 
-		Big Endian :
+    Big Endian :
 		
-		Store MSB at smallest memory location.
+    Store MSB at smallest memory location.
 		
-		               -------------------------------
-		              |               |               |  
-					  |      AB       |       CD      |
-					   -------------------------------
-					     0x4000          0x4001
+	    -------------------------------
+	   |               |               |  
+       |      AB       |       CD      |
+        -------------------------------
+            0x4000          0x4001
 						 
 						 
-		This is important when we will deal with strings. How we store them and read them back will be affected by this.
+    This is important when we will deal with strings. How we store them and read them back will be affected by this.
