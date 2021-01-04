@@ -338,23 +338,20 @@ Now you are set to use any function from libc in your assembly code.
 
   • Installing GNU Tool Chain
 	
-	<!-- language: lang-none -->
-    If your ubuntu installation doesnt have any development tools mentioned in above section then you can install them.
-    Tools like as, ld, objdump, gProf are part of binutils package which can be installed using following command
+>   If your ubuntu installation doesnt have any development tools mentioned in above section then you can install them.
+>   Tools like as, ld, objdump, gProf are part of binutils package which can be installed using following command
 
-     **sudo apt-get update -y**
-     **sudo apt-get install -y binutils-common**
+>    **sudo apt-get update -y**
+>    **sudo apt-get install -y binutils-common**
 		   
   • Installing GCC
 	
-	<!-- language: lang-none -->
     You will have to install gcc seperately by installing build-essential package 
 	  
      **sudo apt-get install -y build-essential**
 		   
   • Installing kdgb 
 	
-	<!-- language: lang-none -->
     Below are the steps to install kdgb on WSL and how to use it using vcxsrv ( X Server).
 	  
      * **sudo apt install extra-cmake-modules**
@@ -371,7 +368,7 @@ Now you are set to use any function from libc in your assembly code.
 	  
   • Using kdgb on WSL
 	
-	<!-- language: lang-none -->
+<!-- language: lang-none -->
     To use applications with GUI on WSL follow below steps.
 	  <!-- language: lang-none -->
      * On Windows (Host Side) install X server vcxsrv.
