@@ -7,8 +7,8 @@ categories: technical post
 
 **Why Assembly ?** 
 =====================================================================================================================================
-Assembly language is really fun. You will get tour of very exotic corners or programming and also learn how things work under the hood.
-Though not many of us will program in assembly for our day to day jobs still I have very compelling reasons to learn assembly.
+Assembly language is really fun. You will get tour of very exotic corners of programming and learn how things work under the hood.
+Though, not many of us will program in assembly for our day to day jobs still I have very compelling reasons to learn assembly.
 Most of the optimizations for program we write in c/c++ are left for compilers. Compilers are super awsome these days yet, they are 
 general purpose tools. So, they have to make some assumptions and might not make educated guess for what we are trying to do.
 It is always benifical to look at the assembly generated for your program by compiler. This habit of peeking under the hood can make 
@@ -49,77 +49,77 @@ Now we understand RAM is where data resides but, RAM has much higher latency tha
 Assume we did not have registers, in that case when cpu need to read the data multiple times each time it has to wait for RAM to complete the operation and give 
 the data back to CPU. This will waste CPU cycles hence registers.
 
-		• General Purpose
+    • General Purpose
 
-           EAX - Accumulator for the operands and result data
-           EBX - Pointer to data in data segment
-           ECX - Counter for string and loop operations
-           EDX - I/O pointer 
-           EDI - Data pointer for destination in string operation
-           ESI  - Data pointer for source in string operation
-           ESP - Stack pointer
-           EBP - Stack Data pointer 
+      EAX - Accumulator for the operands and result data
+      EBX - Pointer to data in data segment
+      ECX - Counter for string and loop operations
+      EDX - I/O pointer 
+      EDI - Data pointer for destination in string operation
+      ESI  - Data pointer for source in string operation
+      ESP - Stack pointer
+      EBP - Stack Data pointer 
 		   
 Note : Each of the registers explained above are 32 bit. We can access 8 bit/16 bit part of it.
        This is done for backward compatibility. Please refer below image
        ![register-internals]({{ site.url }}/assets/types-of-registers.jpg){:class="img-responsive"}	   
 
-	    • Segment Registers
+	• Segment Registers
 	
-	       Most of the platforms we are using uses segmented memory model.
-	       Each program when launched is process that is divided into different
-	       segments for each data, instruction and stack. Logical address is generated
-           which will contain the segment address and offset inside segment for
-           particular instruction of the data. Segment registers hold the address of
-           specific segments.
+	  Most of the platforms we are using uses segmented memory model.
+	  Each program when launched is process that is divided into different
+	  segments for each data, instruction and stack. Logical address is generated
+      which will contain the segment address and offset inside segment for
+      particular instruction of the data. Segment registers hold the address of
+      specific segments.
 
-           CS - Code Segment 
-           DS - Data Segment
-           SS - Stack Segment
-           ES/FS/GS - Extra segment pointer
+      CS - Code Segment 
+      DS - Data Segment
+      SS - Stack Segment
+      ES/FS/GS - Extra segment pointer
 		   
 Note : So when ever process is loaded its segments start address will be loaded 
        into these registers. This is part of context initialization for process.
 
-	    • Instruction Pointer Register
+	• Instruction Pointer Register
 	
-	       EIP points to next instruction in code segment to be executed. Program
-           cant modify the address inside this register directly but we cant control
-           it as side effect of executing instructions like jump.
+	  EIP points to next instruction in code segment to be executed. Program
+      cant modify the address inside this register directly but we cant control
+      it as side effect of executing instructions like jump.
 
-	    • Control Registers 
+	• Control Registers 
 
-           These registers status and operating mode of processor.
-           There are multiple registers I am listing just important ones here.
+      These registers status and operating mode of processor.
+      There are multiple registers I am listing just important ones here.
 
-           CR0 - control the states of processor 
-           CR2 - Page fault information 
-           CR4 - Flags enabling cpu features.
+      CR0 - control the states of processor 
+      CR2 - Page fault information 
+      CR4 - Flags enabling cpu features.
 		   
 Note : control registers cant be modified directly this have to be done using general
        purpose register.
 
-	    • Flags
+	• Flags
 	
-	       Flags is the mechanism by which program can determine if executed 
-           operation was successful or not.
+	  Flags is the mechanism by which program can determine if executed 
+      operation was successful or not.
 
-           Status flags   - check result of mathematical operation (carry /parity ..)
-           Control flags  - control some processor behavior. (string processing direction - DF)
-           System flags   - control operating system level operations (traps/interrupts/io privileges…)
+      Status flags   - check result of mathematical operation (carry /parity ..)
+      Control flags  - control some processor behavior. (string processing direction - DF)
+      System flags   - control operating system level operations (traps/interrupts/io privileges…)
 
 **Tools Used** 
 =====================================================================================================================================
 
 We will be using GNU tool chain for this tutorial.
 
-	* gcc      : GNU compiler collection
-	* as       : GNU assembler (also knows as GAS)
-	* ld       : GNU linker 
-	* gdb      : GNU Debugger (we will be using kdbg for GUI)
-	* gProg    : Profiler
-	* Objdump  : Display info from Obj file 
-    * kdbg     : UI front end for gdb
+  * **gcc**      : GNU compiler collection
+  * **as**       : GNU assembler (also knows as GAS)
+  * **ld**       : GNU linker 
+  * **gdb**      : GNU Debugger (we will be using kdbg for GUI)
+  * **gProg**    : Profiler
+  * **Objdump**  : Display info from Obj file 
+  * **kdbg**     : UI front end for gdb
 
 I am using WSL with ubuntu installed as windows linux subsystem. 	
 Please make sure your system has these installed. 
@@ -132,9 +132,9 @@ Note : I will include special instruction for using UI applications in WSL setup
 
 ![Program Structure]({{ site.url }}/assets/as-structure.jpg){:class="img-responsive"}	   
 
-	• Data Section : This section contains data that is initialized.
-	• Bss Section : Uninitialized data declarations goes here.
-    • Text Section : Instructions and logic manipulating data goes here.
+  • Data Section : This section contains data that is initialized.
+  • Bss Section : Uninitialized data declarations goes here.
+  • Text Section : Instructions and logic manipulating data goes here.
 
 **Hello World Assembly** 
 =====================================================================================================================================
