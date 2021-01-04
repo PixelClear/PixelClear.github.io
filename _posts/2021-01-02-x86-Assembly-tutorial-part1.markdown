@@ -33,10 +33,10 @@ Below image depicts simplest representation for Von-Neuman/Stored program archit
 ![Architecture]({{ site.url }}/assets/vn-architecture.jpg){:class="img-responsive"}
 
 
-	* Control unit makes the control bus to fetch instruction. It then decodes the instruction into micro-code this is actually code that drives the signals to gate levels.
-	* The decoded instruction is then passed to Arithmetic/Execution unit. It makes data bus to fetch the  data and store it in registers.
-	* From instruction pointer control and execution unit knows the address of the current instruction/ data.
-    * This address is sent on address bus to tell RAM which data we are interested in and then, data bus and control bus fetches the actual data.
+  * Control unit makes the control bus to fetch instruction. It then decodes the instruction into micro-code this is actually code that drives the signals to gate levels.
+  * The decoded instruction is then passed to Arithmetic/Execution unit. It makes data bus to fetch the  data and store it in registers.
+  * From instruction pointer control and execution unit knows the address of the current instruction/ data.
+  * This address is sent on address bus to tell RAM which data we are interested in and then, data bus and control bus fetches the actual data.
 	
 at the end of this tutorial I will add one more section explaining more on control unit components.
 Out of order execution, branch prediction, retirement unit and many components are not included in this section for simplicity.
