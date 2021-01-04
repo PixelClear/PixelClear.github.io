@@ -338,45 +338,45 @@ Now you are set to use any function from libc in your assembly code.
 
   • Installing GNU Tool Chain
 	
-	If your ubuntu installation doesnt have any development tools mentioned in above section then you can install them.
-	Tools like as, ld, objdump, gProf are part of binutils package which can be installed using following command
-	  
-	  **sudo apt-get update -y**
-      **sudo apt-get install -y binutils-common**
+If your ubuntu installation doesnt have any development tools mentioned in above section then you can install them.
+Tools like as, ld, objdump, gProf are part of binutils package which can be installed using following command
+
+**sudo apt-get update -y**
+**sudo apt-get install -y binutils-common**
 		   
   • Installing GCC
 	
-    You will have to install gcc seperately by installing build-essential package 
+You will have to install gcc seperately by installing build-essential package 
 	  
-     **sudo apt-get install -y build-essential**
+**sudo apt-get install -y build-essential**
 		   
   • Installing kdgb 
 	
-    Below are the steps to install kdgb on WSL and how to use it using vcxsrv ( X Server).
+Below are the steps to install kdgb on WSL and how to use it using vcxsrv ( X Server).
 	  
-    * **sudo apt install extra-cmake-modules**
-    * **git clone -b maint https://github.com/j6t/kdbg.git**
-    * **cd kdbg**
-    * **git tag -l** 
-    * **git checkout kdbg-3.0.1**
-    * **sudo apt install libkf5iconthemes-dev libkf5xmlgui-dev**
-    * **sudo apt-get install -y gettext**
-    * **cmake .**
-    * **sudo make install**
+* **sudo apt install extra-cmake-modules**
+* **git clone -b maint https://github.com/j6t/kdbg.git**
+* **cd kdbg**
+* **git tag -l** 
+* **git checkout kdbg-3.0.1**
+* **sudo apt install libkf5iconthemes-dev libkf5xmlgui-dev**
+* **sudo apt-get install -y gettext**
+* **cmake .**
+* **sudo make install**
 
-      After following above steps kdbg is not installed on your system. 
+After following above steps kdbg is not installed on your system. 
 	  
   • Using kdgb on WSL
 	
-    To use applications with GUI on WSL follow below steps.
+To use applications with GUI on WSL follow below steps.
 	  
-    * On Windows (Host Side) install X server vcxsrv.
-    * Launch it with default option. ( Just make sure to check box saying **"Disable Access Control"** and put -ac in command line for allowing public access)
-    * On WSL command prompt execute following command that will set the display number (You can also write below command in your .bashrc in case you dont want to do it everytime)
+ * On Windows (Host Side) install X server vcxsrv.
+ * Launch it with default option. ( Just make sure to check box saying **"Disable Access Control"** and put -ac in command line for allowing public access)
+ * On WSL command prompt execute following command that will set the display number (You can also write below command in your .bashrc in case you dont want to do it everytime)
 		
-        **export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0** 
+   **export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0** 
 		
-    * Now you are good to go!
+* Now you are good to go!
 
     Following above steps when ever you will launch the kdgb you will see the GUI and you can debug the application.
 
