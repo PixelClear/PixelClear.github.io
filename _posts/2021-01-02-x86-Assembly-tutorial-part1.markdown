@@ -5,7 +5,7 @@ date:   2021-01-02 15:13:36 +0100
 categories: technical post
 ---
 
-**Why Assembly ?** 
+<ins>**Why Assembly ?**</ins> 
 =====================================================================================================================================
 Assembly language is really fun. You will get tour of very exotic corners of programming and learn how things work under the hood.
 Though, not many of us will program in assembly for our day to day jobs still I have very compelling reasons to learn assembly.
@@ -19,13 +19,13 @@ So without further ado lets get started.
 
 **Note** : We are specifically starting with x86 assembly so we get better understanding of segmented address modes and then move on to x64.
 
-**What is Assembly ?** 
+<ins>**What is Assembly ?**</ins> 
 =====================================================================================================================================
 
 Assembly language is abstraction layer on machine code instructions. Assembly language has opcodes for machine codes instructions. 
 Special program called as assembler will take this program and do necessary conversions.
 
-**Simplest Program Execution Model ?** 
+<ins>**Simplest Program Execution Model ?**</ins> 
 =====================================================================================================================================
 
 Below image depicts simplest representation for Von-Neuman/Stored program architecture.
@@ -42,7 +42,7 @@ at the end of this tutorial I will add one more section explaining more on contr
 Out of order execution, branch prediction, retirement unit and many components are not included in this section for simplicity.
 Cache is one more memory that is omitted from above figure again for same reason and will be explained later in separate sections.
 
-**Types of Registers** 
+<ins>**Types of Registers**</ins> 
 =====================================================================================================================================
 
 Now we understand RAM is where data resides but, RAM has much higher latency than CPU. So, we have added on chip memory known as registers.
@@ -108,18 +108,18 @@ the data back to CPU. This will waste CPU cycles hence registers.
       Control flags  - control some processor behavior. (string processing direction - DF)
       System flags   - control operating system level operations (traps/interrupts/io privileges…)
 
-**Tools Used** 
+<ins>**Tools Used**</ins> 
 =====================================================================================================================================
 
 We will be using GNU tool chain for this tutorial.
 
-  * **gcc**      : GNU compiler collection
-  * **as**       : GNU assembler (also knows as GAS)
-  * **ld**       : GNU linker 
-  * **gdb**      : GNU Debugger (we will be using kdbg for GUI)
-  * **gProg**    : Profiler
-  * **Objdump**  : Display info from Obj file 
-  * **kdbg**     : UI front end for gdb
+>  * **gcc**      : GNU compiler collection
+>  * **as**       : GNU assembler (also knows as GAS)
+>  * **ld**       : GNU linker 
+>  * **gdb**      : GNU Debugger (we will be using kdbg for GUI)
+>  * **gProg**    : Profiler
+>  * **Objdump**  : Display info from Obj file 
+>  * **kdbg**     : UI front end for gdb
 
 I am using WSL with ubuntu installed as windows linux subsystem. 	
 Please make sure your system has these installed. 
@@ -127,16 +127,18 @@ If your system doesn’t have these then please follow **"Installation"** sectio
 
 **Note** : I will include special instruction for using UI applications in WSL setup.
 
-**Structure of Assembly Program** 
+<ins>**Structure of Assembly Program**</ins> 
 =====================================================================================================================================
 
 ![Program Structure]({{ site.url }}/assets/as-structure.jpg){:class="img-responsive"}	   
 
   • Data Section : This section contains data that is initialized.
+  
   • Bss Section : Uninitialized data declarations goes here.
+  
   • Text Section : Instructions and logic manipulating data goes here.
 
-**Hello World Assembly** 
+<ins>**Hello World Assembly**</ins> 
 =====================================================================================================================================
 
 For fun we start with showing hello world program in assembly. Along side is given explanation for each line for understanding.
@@ -190,10 +192,10 @@ We want to print the value to console. Hence we are using system calls for that 
 given unique number. We are using 4 which is sys_write system call.Then we want to put this string to stdout. Linux
 treats everything as file. So 1 is file descriptor for stdout.So we fill the registers will following values 
 
-    EAX - system call number 
-    EBX - file descriptor number
-    ECX - actual string
-    EDX - length of string
+>    EAX - system call number 
+>    EBX - file descriptor number
+>    ECX - actual string
+>    EDX - length of string
 
 After loading proper values inside registers we issue software interrupt using int instruction.
 There are software interrupt and hardware interrupts. Hardware interrupts have higher priority than software interrupts. 
@@ -222,45 +224,46 @@ and hence we get out string printed on console.
 
 In this part we are simply calling sys_exit system call to complete the execution of our program.
 
-**Compiling and Running** 
+<ins>**Compiling and Running**</ins> 
 =====================================================================================================================================
 
 This is the most exciting part (If you dont get any errors !).
 
 Use following command to build object file
 
-  **as --32 -o HelloWorld.o HelloWorld.s**
+>  **as --32 -o HelloWorld.o HelloWorld.s**
 	
 Use following command to link the object file and get executable
 
-  **ld -m elf_i386 -o HelloWorld HelloWorld.o**
+>  **ld -m elf_i386 -o HelloWorld HelloWorld.o**
 
 Use following command to run 
 
-  **./HelloWorld**
+>  **./HelloWorld**
 
 **Note** : Please see options **--32** and **-m elf_i386** used to build in 32 bit mode.
 
-**Debugging HelloWorld** 
+<ins>**Debugging HelloWorld**</ins> 
 =====================================================================================================================================
 
 We need to have debug symbols embedded in out exe in order to debug it.
 Hence we use following symbols so assembler embeds those special symbols in object file.
 
-  **as --32 -gstabs -o HelloWorld.o HelloWorld.s**
-  **ld -m elf_i386 -o HelloWorld HelloWorld.o**
+>  **as --32 -gstabs -o HelloWorld.o HelloWorld.s**
+>
+>  **ld -m elf_i386 -o HelloWorld HelloWorld.o**
 	
 
 As you remember we are using kdbg to debug so run following command 
 
-  **kdbg HelloWorld**
+>  **kdbg HelloWorld**
 
 You will see below window and as you set breakpoints and step in code you can inspect values in registers and memory locations. If you see in below image, bottom most window on left 
 shows the values in different registers.
 
 ![Debugger View]({{ site.url }}/assets/kdb-debugging.jpg){:class="img-responsive"}
 
-**Using Gcc to inspect assembly generated** 
+<ins>**Using Gcc to inspect assembly generated**</ins> 
 =====================================================================================================================================
 
 Lets write HelloWorld program in c and see the generated assembly and try to compare it with what we have written.
@@ -276,7 +279,7 @@ int main() {
 
 Run command 
 
-  **gcc -m32 -S HelloWorld.c** 
+>  **gcc -m32 -S HelloWorld.c** 
   
 This command will generate HelloWorld.s file.
 
@@ -305,10 +308,10 @@ main:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-The major difference you will observe here is direct call to printf function from libc.
-We can also use functions from libc by linking it.
+The major difference you will observe here is direct call to printf function from LibC.
+We can also use functions from LibC by linking it.
 
-**Using LibC function in assembly** 
+<ins>**Using LibC function in assembly**</ins> 
 =====================================================================================================================================
 
 We write out own version like below 
@@ -316,7 +319,7 @@ We write out own version like below
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 .section .data
 output:
-        .asciz "Hello World..."
+        .asciz "Hello World..."            -------------------------> asciz directive is used to specify null terminated string. LibC functions needs null terminated string.
 .section .text
 .globl _start
 _start:
@@ -328,18 +331,19 @@ _start:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-Use following commands to compiler and then link dynamically to libc.
+Use following commands to compiler and then link dynamically to LibC.
 
-  **as --32 -o HelloWorld.o HelloWorld.s**
-  **ld -m elf_i386 -dynamic-linker /lib/ld-linux.so.2 -o HelloWorld -lc HelloWorld.o**
+>  **as --32 -o HelloWorld.o HelloWorld.s**
 
-**Note** : Please make sure you have 32 bit version of libc installed. If you dont have it please use following command to install it.
+>  **ld -m elf_i386 -dynamic-linker /lib/ld-linux.so.2 -o HelloWorld -lc HelloWorld.o**
 
-  **sudo apt-get install build-essential libc6-dev-i386**
+**Note** : Please make sure you have 32 bit version of LibC installed. If you dont have it please use following command to install it.
+
+>  **sudo apt-get install build-essential libc6-dev-i386**
 	   
-Now you are set to use any function from libc in your assembly code.
+Now you are set to use any function from LibC in your assembly code.
 
-**Installation** 
+<ins>**Installation**</ins> 
 =====================================================================================================================================
 
 • <ins>**Installing GNU Tool Chain**</ins>
@@ -347,37 +351,37 @@ Now you are set to use any function from libc in your assembly code.
    If your ubuntu installation doesnt have any development tools mentioned in above section then you can install them.
    Tools like as, ld, objdump, gProf are part of binutils package which can be installed using following command
 
-   **sudo apt-get update -y**
+>   **sudo apt-get update -y**
    
-   **sudo apt-get install -y binutils-common**
+>   **sudo apt-get install -y binutils-common**
 		   
 • <ins>**Installing GCC**</ins>
 	
    You will have to install gcc seperately by installing build-essential package 
 	  
-   **sudo apt-get install -y build-essential**
+>   **sudo apt-get install -y build-essential**
 		   
 • <ins>**Installing kdgb**</ins> 
 	
    Below are the steps to install kdgb on WSL and how to use it using vcxsrv ( X Server).
 	  
-   * **sudo apt install extra-cmake-modules**
+>   * **sudo apt install extra-cmake-modules**
    
-   * **git clone -b maint https://github.com/j6t/kdbg.git**
+>   * **git clone -b maint https://github.com/j6t/kdbg.git**
    
-   * **cd kdbg**
+>   * **cd kdbg**
    
-   * **git tag -l** 
+>   * **git tag -l** 
    
-   * **git checkout kdbg-3.0.1**
+>   * **git checkout kdbg-3.0.1**
    
-   * **sudo apt install libkf5iconthemes-dev libkf5xmlgui-dev**
+>   * **sudo apt install libkf5iconthemes-dev libkf5xmlgui-dev**
    
-   * **sudo apt-get install -y gettext**
+>   * **sudo apt-get install -y gettext**
    
-   * **cmake .**
+>   * **cmake .**
    
-   * **sudo make install**
+>   * **sudo make install**
 
    After following above steps kdbg is not installed on your system. 
 	  
@@ -391,13 +395,13 @@ Now you are set to use any function from libc in your assembly code.
    
    * On WSL command prompt execute following command that will set the display number (You can also write below command in your .bashrc in case you dont want to do it everytime)
 		
-    **export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0** 
+>    **export DISPLAY=$(cat /etc/resolv.conf | grep nameserver | awk '{print $2}'):0** 
 		
    * Now you are good to go!
 
   Following above steps when ever you will launch the kdgb you will see the GUI and you can debug the application.
 
-**Miscellaneous** 
+<ins>**Miscellaneous**</ins> 
 =====================================================================================================================================
 	  
 • <ins>**Hardware Interrupt Handling**</ins>
