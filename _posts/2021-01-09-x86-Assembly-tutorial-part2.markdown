@@ -24,7 +24,7 @@ at start of the function or at place where it is used. In assembly we have dedic
 
            defining data - specify type of data, placehholder name for data , initial value.
 		   
-		   declaring data - specify type of data, placehholder name for data.
+           declaring data - specify type of data, placehholder name for data.
 
 In assembly we have **.data, .rodata , .bss** sections where we need to define/declare our data so that the memory is reserved for it.
 
@@ -73,7 +73,7 @@ The syntax for declaring data in .bss section is
 
 We can think of it as temporary variable.We can have global buffer or local buffers using following directives.
 	  
->	  .comm   Declares common area for data 
+>     .comm   Declares common area for data 
 >     .lcomm  Declared local common area for data
     
 **Note** : .bss section is not part of exe. The memory you declare in this section is not reserved during compile time.
