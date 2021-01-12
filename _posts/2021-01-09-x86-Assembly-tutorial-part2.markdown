@@ -204,7 +204,7 @@ loop:
 
 >   base_address + offset_address + index * size
 
-   So with EDX holding value 0 we will access first element in values array and put it in %eax. Then we increament that value and continue.
+   So, with EDX holding value 0 we will access first element in values array and put it in %eax. Then we increament that value and continue.
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 pushl %eax                 ----------------------> Put value in EAX on stack.
@@ -220,8 +220,7 @@ int $0x80
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
    Please check side notes in above code snippet for detailed explaination of loop logic. I will add more detailed explaination for JUMP and CMP instructions. 
-   This section just gives introduction to these instructions and many details are not included for simplicity.
-
+   
   * **Indirect Memory Addressing Mode** 
 
    Registers can also hold the address of data. We can think of this as Pointer manipulation in C.Lets take same example of printing array values but this 
@@ -238,7 +237,7 @@ values:
 _start:
      nop
      movl $values, %edi
-     movl $100, 4(%edi)
+     movl $100, 4(%edi)              
      movl values(, %edi, 4), %ebx
      pushl %ebx
      pushl $output
@@ -255,16 +254,15 @@ movl $values, %edi
 movl $100, 4(%edi)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-   We first move the address of values to EDX. When **$** appended to label assembler will give the address of variable.
+   We first move the starting address of values array to EDX. When **$** appended to label assembler will give the address of variable.
    The second instruction is actually dereferencing the address in EDI then adding 4 bytes to it and writing 100 as new value.
-   In C the equivalent statement would be *(values + 1) = 100.
+   In C the equivalent statement would be *(values + 1) = 100. As result of above code we have updated the value in array at index 1.
 
 <ins>**Conditional Move**</ins> 
 =====================================================================================================================================
 
 As optimization to move operations x86 assembly also provides conditional move.Conditional move will move the data based on the status of EFLAGS.
-There are multiple conditional move instructions like COMA, COMBE and so on.  
-
+There are multiple conditional move instructions like COMA, COMBE and so on. Consider following code for example
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 movl number2, %ebx
@@ -298,20 +296,23 @@ To optimize these exchange operation we are provided with multiple instructions.
 <ins>**Miscellaneous**</ins> 
 =====================================================================================================================================
 	  
-• <ins>**Hardware Interrupt Handling**</ins>
+• <ins>**On Demand Paging**</ins>
 	    
-   Memory management unit in operating systems keep Page Table. Each entry 
+   Memory management unit in operating systems maintains **Page Table** data structure. Each entry 
    in this table maps virtual page to physical page(page in RAM).
    
-   When you compile/link/load program the addresses allocated are virtual addresses. The .text section and so allocated
+   When you compile/link/load program the addresses allocated are virtual addresses.The .text section and so allocated
    other sections will be divided in virtual pages generally of size 64kb. Each virtual page contains bunch of virtual addresses.
    When ever your program access some location and that is not present in RAM then processor raises page fault trap.
-   As we saw in tutorial 1 it is type of exception. After raising the exception processor goes on to execute the exception handler.
-   Also note as there are virtual pages, physical pages hard driver where your program resides is also divided in block. These blocks
-   are same size of pages.Inside this handler the required address is located in some block. Then new page is created in RAM and this 
-   block is copied to this physical page.If the address you accessed doesnt belong to your address space 
-   then segmentation fault is generated and program might terminate.
+   As we saw in tutorial 1 it is type of exception.After raising the exception processor goes on to execute the exception handler.
+   The pages in RAM are referred as physical page or frame.Similary hard driver where your program resides is also divided in block.
+   These blocks are same size of physical pages and virtual pages.During execution of exception handler the required address is located 
+   using Page Table. As this address is not present in RAM so it will be further dereferenced and corresponding block on hard driver 
+   will be found. Then new page is created in RAM and this block is copied to this physical page.If the address you accessed doesnt belong 
+   to your address space then segmentation fault is generated and program might terminate. If address you are referencing doesnt belong to
+   your processes address space then it will be mapping to some page that is mapped in some other process and processor will raise **General   
+   Protextion Fault (GPF)**.
    
-   .bss section is implemented using zero fill on demand method. The memory is not mapped to any physical page. The first time buffer 
+   .bss section is implemented using **Zero Fill On Demand Paging** method. The memory is not mapped to any physical page. The first time buffer 
    is accessed then a new page is allocated and it is zero initialized.This zero initialized memory is then returned to program as buffer.
    You can try to print the size by declaring buffer inside .data section and in .bss section to see the difference.		
