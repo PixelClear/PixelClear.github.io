@@ -84,174 +84,180 @@ We can think of it as temporary variable.We can have global buffer or local buff
 =====================================================================================================================================
 
 GAS provides **MOV** instruction to move data between different types of memories.
-The syntax for mov instruction is
+The syntax for **MOV** instruction is
 
->    **movx source, destination
+>    movx source, destination
 
-Based on the size of data element we want to move we need to append following suffix to mov instruction 
->    **l - 32 bit long word value**
->    **w - 16 bit word value**
->	 **b - 8 bit byte value**
+Based on the size of data element we want to move we need to append following suffix to **MOV** instruction 
+
+>    l - 32 bit long word value
+
+>    w - 16 bit word value
+
+>	 b - 8 bit byte value
  
 **Note** : We have to be careful here. If in declaration the size of data type is 16 bits and we move it using **movl** then still 4 bytes will be read
-           and the resultant read value will be wrong. I think now we will start to love compiler. 
+           and the resultant read value will be wrong. I think now we should start feeling the love for compiler. 
 
-    • Moving data between registers 
+• <ins>Moving data between registers</ins> 
 	  
-	  This is the easiest and fastest way to move data with processor. The only care we have to take is while moving data to and from control, debug, segment
-	  registers. Value can be moved into these special purpose registers only to and from general purpose registers.
-	
->     **movl %eax, %ecx**  - Moving 32 bit of data from eax to ecx 
->     **movw %ax, %cx**	   - Moving 16 bit of data from ax to cx
+This is the easiest and fastest way to move data with processor. The only care we have to take is while moving data to and from control, debug, segment
+registers. Value can be moved into these special purpose registers only to and from general purpose registers.
 
-      Special care needs to be taken when moving data between registers of different size.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	 
+movl %eax, %ecx  - Moving 32 bit of data from EAX to ECX 
+movw %ax, %cx	 - Moving 16 bit of data from AX to CX
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	 
+
+Special care needs to be taken when moving data between registers of different size.
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	 	  
+movb %al, %bx    - This will generate error. As we are trying to copy 8 bits from AL to 16 bit BX. We should instead move AX to BX.
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	 
+
+• <ins>Moving data between register and memory</ins>
+
+Moving data between memory and register is tricky. We have to know how to represent the address of data we want to move in instruction code.
+There are multiple addressing modes to access data 
 	  
->     **movb %al, %bx**    - This will generate error. As we are trying to copy 8 bits from AL to 16 bit BX. We should instead move AX to BX.
-
-    • Moving data between register and memory
-
-      Moving data between memory and register is tricky. We have to know how to represent the address of data we want to move in instruction code.
-      There are multiple addressing modes to access data 
-	  
-	   * Direct Memory Addressing Mode 
+  * Direct Memory Addressing Mode 
 	     
-		 We can directly specify data using label. For example 
+    We can directly specify data using label. For example 
 		 
-         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         .section .data 
-         number:
-           .int 9
-         .section .text
-         .globl _start 
-           _start:
-                 nop
-         		movl number, %ecx               --------------> Here we are moving value from memory to register by directly referencing to label.
-         		movl $1, %eax                   --------------> This is example of moving immediate data to registers.
-         		movl $0, %ebx
-         		int $0x80
-         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~		 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    .section .data 
+    number:
+      .int 9
+    .section .text
+    .globl _start 
+    _start:
+          nop
+          movl number, %ecx               --------------> Here we are moving value from memory to register by directly referencing to label.
+          movl $1, %eax                   --------------> This is example of moving immediate data to registers.
+          movl $0, %ebx
+          int $0x80
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~		 
 
-	   * Indexed Memory Addressing Mode
+  * Indexed Memory Addressing Mode
 	     
-		 We can think of it as accessing arrays in C. Please read below section carefuly as we will be covering arrays and loops here.
-		 Consider following example code 
+    We can think of it as accessing arrays in C. Please read below section carefuly as we will be covering arrays and loops here.
+	Consider following example code 
 		 
-         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         .section .data
-         output:
-              .asciz “The value is %d\n”
-         values:                                   
-              .int 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60 
-         .section .text
-         .globl _start
-         _start:
-              nop
-              movl $0, %edi                      
-         loop:
-              movl values(, %edi, 4), %eax        
-              pushl %eax
-              pushl $output
-              call printf
-              addl $8, %esp
-              inc %edi
-              cmpl $11, %edi
-              jne loop
-              movl $0, %ebx
-              movl $1, %eax
-              int $0x80      
-         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    .section .data
+    output:
+         .asciz “The value is %d\n”
+    values:                                   
+         .int 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60 
+    .section .text
+    .globl _start
+    _start:
+         nop
+         movl $0, %edi                      
+    loop:
+         movl values(, %edi, 4), %eax        
+         pushl %eax
+         pushl $output
+         call printf
+         addl $8, %esp
+         inc %edi
+         cmpl $11, %edi
+         jne loop
+         movl $0, %ebx
+         movl $1, %eax
+         int $0x80      
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-         Lets break this down and explaining each line.
+    Lets break this down and explaining each line.
 		 
-		 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         .section .data 		 
-		 output:
-		      .asciz “The value is %d\n”
-		 values:                                   
-              .int 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60 
-         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    .section .data 		 
+	output:
+	     .asciz “The value is %d\n”
+	values:                                   
+         .int 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		 
-		 This is out data section.We are declaring null terminated string to print the values and array of integers with label values.
+    This is out data section.We are declaring null terminated string to print the values and array of integers with label values.
 
-         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         .section .text
-         .globl _start
-         _start:
-              nop
-              movl $0, %edi   
-         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~		 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    .section .text
+    .globl _start
+    _start:
+         nop
+         movl $0, %edi   
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~		 
 		 
-         This is start of our text section and we will be using values in register %edx as counter for loop. So we initialize it to 0.
+    This is start of our text section and we will be using values in register EDX as counter for loop. So we initialize it to 0.
 
-         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		 loop:
-              movl values(, %edi, 4), %eax        
-		 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    loop:
+               movl values(, %edi, 4), %eax        
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-         This label loop marks the start of loop. The way values are index has following syntax
+    This label loop marks the start of loop. The way values are index has following syntax
 		 
->		 **movx base_address( offset_address, index, size), destination
+>	movx base_address( offset_address, index, size), destination
 
-         If any of the values are zero we can omit it. As we want to iterate the array from start hence, the offset_address for us will be 0.
-		 So, we have omitted it. The way this address deduced is using following expression 
+    If any of the values are zero we can omit it. As we want to iterate the array from start hence, the offset_address for us will be 0.
+    So, we have omitted it. The way this address deduced is using following expression 
 		 
->        ** base_address + offset_address + index * size
+>   base_address + offset_address + index * size
 
-         So with %edx holding value 0 we will access first element in values array and put it in %eax. Then we increament that value and continue.
+    So with EDX holding value 0 we will access first element in values array and put it in %eax. Then we increament that value and continue.
 		 
-		 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		      pushl %eax                 ----------------------> Put value in %eax on stack.
-		      pushl $output              ----------------------> Put format string on stack.
-              call printf                ----------------------> Stack is prepared so call printf.
-              addl $8, %esp              ----------------------> Clear stack by adding to stack pointer. As result of two pushl it was decremented by 8 bytes.
-              inc %edi                   ----------------------> Increment the value of counter in %edx.
-              cmpl $11, %edi             ----------------------> Compare value of counter to length of array.
-              jne loop                   ----------------------> Jump to label loop if values are not equal.  
-              movl $0, %ebx           
-              movl $1, %eax
-              int $0x80      
-         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    pushl %eax                 ----------------------> Put value in EAX on stack.
+    pushl $output              ----------------------> Put format string on stack.
+    call printf                ----------------------> Stack is prepared so call printf.
+    addl $8, %esp              ----------------------> Clear stack by adding to stack pointer. As result of two pushl it was decremented by 8 bytes.
+    inc %edi                   ----------------------> Increment the value of counter in EDX.
+    cmpl $11, %edi             ----------------------> Compare value of counter to length of array.
+    jne loop                   ----------------------> Jump to label loop if values are not equal.  
+    movl $0, %ebx           
+    movl $1, %eax
+    int $0x80      
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 		 
-		 Please check side notes in above code snippet for detailed explaination of loop logic. I will add more detailed explaination for JUMP and CMP instructions. 
-		 This section just gives introduction to these instructions and many details are not included for simplicity.
+    Please check side notes in above code snippet for detailed explaination of loop logic. I will add more detailed explaination for JUMP and CMP instructions. 
+    This section just gives introduction to these instructions and many details are not included for simplicity.
 		
-       * Indirect Memory Addressing Mode 
+  * Indirect Memory Addressing Mode 
 
-         Registers can also hold the address of data. We can think of this as Pointer manipulation in C.Lets take same example of printing array values but this 
-		 time access the data using indirect memory addressing mode.
+    Registers can also hold the address of data. We can think of this as Pointer manipulation in C.Lets take same example of printing array values but this 
+    time access the data using indirect memory addressing mode.
 		 
-         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         .section .data
-		 output:
-		      .asciz “The value at index 1 is %d\n”
-         values:
-              .int 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60
-         .section .text
-         .globl _start
-         _start:
-              nop
-              movl $values, %edi
-              movl $100, 4(%edi)
-              movl values(, %edi, 4), %ebx
-              pushl %ebx
-			  pushl $output
-              call printf
-			  movl $0, %ebx           
-              movl $1, %eax
-              int $0x80    
-		 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-         Let me explain important sections in code. 		 
-		 
-		 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		 movl $values, %edi
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    .section .data
+    output:
+	     .asciz “The value at index 1 is %d\n”
+    values:
+         .int 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60
+    .section .text
+    .globl _start
+    _start:
+         nop
+         movl $values, %edi
          movl $100, 4(%edi)
-		 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-		 
-		 We first move the address of values to EDX. When **$** appended to label assembler will give the address of variable.
-		 The second instruction is actually dereferencing the address in EDI then adding 4 bytes to it and writing 100 as new value.
-		 In C the equivalent statement would be *(values + 1) = 100.
+         movl values(, %edi, 4), %ebx
+         pushl %ebx
+	     pushl $output
+         call printf
+	     movl $0, %ebx           
+         movl $1, %eax
+         int $0x80    
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+    Let me explain important sections in code. 		 
+		 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    movl $values, %edi
+    movl $100, 4(%edi)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		 
+    We first move the address of values to EDX. When **$** appended to label assembler will give the address of variable.
+    The second instruction is actually dereferencing the address in EDI then adding 4 bytes to it and writing 100 as new value.
+    In C the equivalent statement would be *(values + 1) = 100.
 
 <ins>**Conditional Move**</ins> 
 =====================================================================================================================================
