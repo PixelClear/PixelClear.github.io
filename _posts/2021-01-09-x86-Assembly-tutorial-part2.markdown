@@ -33,14 +33,14 @@ In assembly we have **.data, .rodata , .bss** sections where we need to define/d
 The syntax for specifying data in these sections is 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	  
-     label :
-     .directive initial value**
+label :
+.directive initial value**
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	 
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	   
-    .data 
-     pi:
-       .float 3.14
+.data 
+pi:
+  .float 3.14
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	   
 	  
 The label is just like variable name in C. .directive specify what is the type of data along with the size. 
@@ -66,9 +66,9 @@ This section generally holds that without initial values. You can use this secti
 The syntax for declaring data in .bss section is
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	   
-   .directive label, length
+.directive label, length
    
-   .lcomm buffer, 100
+.lcomm buffer, 100
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	   
 
 We can think of it as temporary variable.We can have global buffer or local buffers using following directives.
