@@ -290,9 +290,13 @@ Exchanging data is also one of the most common operations we perform. If we want
 To optimize these exchange operation we are provided with multiple instructions.
 
 >**XCHG**       Exchanges the values of two registers, or a register and a memory location
+
 >**BSWAP**      Reverses the byte order in a 32-bit register
+
 >**XADD**       Exchanges two values and stores the sum in the destination operand
+
 >**CMPXCHG**    Compares a value with an external value and exchanges it with another
+
 >**CMPXCHG8B**  Compares two 64-bit values and exchanges it with another
 
 <ins>**Miscellaneous**</ins> 
