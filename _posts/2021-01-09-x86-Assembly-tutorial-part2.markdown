@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "X86 Assembly - Tutorial 1"
+title:  "X86 Assembly - Tutorial 2"
 date:   2021-01-09 15:13:36 +0100
 categories: technical post
 ---
@@ -17,31 +17,36 @@ memory and so, its important we understand instructions in assembly that helps u
 <ins>**Defining Data in Assembly Program**</ins> 
 =====================================================================================================================================
 
-Before we jump and start looking and how to manipulate data we must know how to define/declare it. In C generally you find data defined/declared
+Before we jump and start looking at how to manipulate data, we must know how to define/declare it. In C generally you find data defined/declared
 at start of the function or at place where it is used. In assembly we have dedicated sections to define/declare the data.
 
 **Note** : There is subtle difference between defining data and declaring data. 
+
            defining data - specify type of data, placehholder name for data , initial value.
+		   
 		   declaring data - specify type of data, placehholder name for data.
 
-In assembly we have .data, .rodata , .bss sections where we need to define/declare our data so that memory is reserved for it.
+In assembly we have **.data, .rodata , .bss** sections where we need to define/declare our data so that the memory is reserved for it.
 
-    • Defining Data in .data or .rodata
+• <ins>Defining Data in .data or .rodata</ins>
       
-	  The syntax for specifying data in these sections is 
-	  
->     ** label :**
+The syntax for specifying data in these sections is 
 
-      **.directive initial value**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	  
+     label :
+     .directive initial value**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	 
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	   
+    .data 
+     pi:
+       .float 3.14
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	   
 	  
->     **pi :**
-     
-  	  .float 3.14
-	  
-      The label is just like variable name in C. .directive specify what is the type of data along with the size. 
-      Different directives supported for .data section are 
-	  
->	  .ascii Text string
+The label is just like variable name in C. .directive specify what is the type of data along with the size. 
+Different directives supported for .data section are 
+
+>     .ascii Text string
 >     .asciz Null-terminated text string
 >     .byte Byte value
 >     .double Double-precision floating-point number
@@ -53,24 +58,27 @@ In assembly we have .data, .rodata , .bss sections where we need to define/decla
 >     .short 16-bit integer number
 >     .single Single-precision floating-point number (same as .float)
 
-**Note** : Read only data goes in .rodata section.
+**Note** : Read only data goes in **.rodata** section.
 	  
-    • Defining Data in .bss 
+• <ins>Defining Data in .bss</ins>
 	  
-	  This section generally holds that without initial values. You can use this section to declare buffers that will be utilized later.
-	  The syntax for declaring data in .bss section is
+This section generally holds that without initial values. You can use this section to declare buffers that will be utilized later.
+The syntax for declaring data in .bss section is
 
->     **.directive label, length**
->	  **.lcomm buffer, 100**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	   
+   .directive label, length
+   
+   .lcomm buffer, 100
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	   
 
-	  We can think of it as temporary variable.We can have global buffer or local buffers using following directives.
+We can think of it as temporary variable.We can have global buffer or local buffers using following directives.
 	  
->	  **.comm**  Declares common area for data 
->     **.lcomm** Declared local common area for data
+>	  .comm   Declares common area for data 
+>     .lcomm  Declared local common area for data
     
 **Note** : .bss section is not part of exe. The memory you declare in this section is not reserved during compile time.
-           As the data is not initialized hence, it is lazily allocated. Operating system implement virtual memory using 
-		   something called as on demand paging.Please refer to **Miscellaneous** to get some details on **On Demand Paging**. 
+           As the data is not initialized hence, it is lazily allocated. Operating system implements virtual memory using 
+		   technique called as on demand paging.Please refer to **Miscellaneous** to get some details on **On Demand Paging**. 
 		   
 <ins>**Moving Data**</ins> 
 =====================================================================================================================================
