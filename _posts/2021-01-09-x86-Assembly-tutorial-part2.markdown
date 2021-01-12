@@ -275,7 +275,9 @@ Above code snippet will load number1 in EAX and number2 in EBX.
 CMP instruction will subtract number2 from number1 and set appropriate EFLAGS status.
 
 If **number1 < number2** CMP will set **ZF = 0** and **CF = 1**.
+
 If **number1 = number2** CMP will set **ZF = 0** and **CF = 0**.
+
 If **number1 > number2** CMP will set **ZF = 1** and **CF = 0**.
 
 Next COMA instruction will replace the value in EBX if  **ZF = 1** and **CF = 0**. In other words EBX will be updated if number 1 is greater or above the 
@@ -310,8 +312,7 @@ To optimize these exchange operation we are provided with multiple instructions.
    using Page Table. As this address is not present in RAM so it will be further dereferenced and corresponding block on hard driver 
    will be found. Then new page is created in RAM and this block is copied to this physical page.If the address you accessed doesnt belong 
    to your address space then segmentation fault is generated and program might terminate. If address you are referencing doesnt belong to
-   your processes address space then it will be mapping to some page that is mapped in some other process and processor will raise **General   
-   Protextion Fault (GPF)**.
+   your processes address space then it will be mapping to some page that is mapped in some other process and processor will raise **General Protextion Fault (GPF)**.
    
    .bss section is implemented using **Zero Fill On Demand Paging** method. The memory is not mapped to any physical page. The first time buffer 
    is accessed then a new page is allocated and it is zero initialized.This zero initialized memory is then returned to program as buffer.
