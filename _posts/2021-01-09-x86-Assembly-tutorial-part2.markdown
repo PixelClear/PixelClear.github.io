@@ -320,4 +320,4 @@ To optimize these exchange operation we are provided with multiple instructions.
    
    .bss section is implemented using **Zero Fill On Demand Paging** method. The memory is not mapped to any physical page. The first time buffer 
    is accessed then a new page is allocated and it is zero initialized.This zero initialized memory is then returned to program as buffer.
-   You can try to print the size by declaring buffer inside .data section and in .bss section to see the difference.		
+   You can try to print the size by declaring buffer inside .data section and in .bss section to see the difference in exe sizes.		
