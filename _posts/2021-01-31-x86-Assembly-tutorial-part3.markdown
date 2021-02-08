@@ -8,7 +8,7 @@ categories: technical post
 <ins>**Controling the Flow**</ins> 
 =====================================================================================================================================
 
-We break programs in logical structures know as functions.Functions is logical set of instructions that tansforms data in very particular way.
+We break programs in logical structures know as functions.Function is logical set of instructions that tansforms data in very particular way.
 This logical separation is really great form of abstraction building.This construct in programing language is called function. The way we utilize 
 this function is by calling it.We will see in detail what it means to call function.We may want to call function based on some condition.The 
 language construct used for this is branches.Also, transforming data sometime means performing repeatative operations on data.The construct we 
@@ -27,11 +27,11 @@ looks very sequential. This was reason why processors were slow. Later invention
 Many instructions ahead of current instruction pointer location are prefeched in **Instruction Prefetch Cache**.**Out Of Order Execution Engine** takes these instructions 
 and starts executing them and the results of this execution is then placed in **Retirement Unit**.The **Retirement Unit** will not execute the result until its time to 
 do so in program logic.So, instruction pointer reached on instruction then, **Out Of Order Execution Engine** might have already placed the result of it in **Retirement Unit**.
-The **Retirement Unit** then will execute the result of this instruction which was placed by out of oder engine. Once the **Retirement Unit** executes this result then 
+The **Retirement Unit** then will execute the result of this instruction which was placed by **Out Of Order Execution Engine**. Once the **Retirement Unit** executes this result then 
 and then only we say the instruction is executed and instruction pointer will be increamented.This explaination describes what actually happens in processors. 
 For simplicity we will consider that the instruction pointer behaves in sequential manner and processor execute instructions sequentially.
 
-**EIP** is instruction pointer for processor. As programmer we cannot directly change the content of EIP register. But, there are instructions who has side
+**EIP** is instruction pointer for processor. As a programmer we cannot directly change the content of EIP register. But, there are instructions who has side
 effects and by executing these instructions we can indirectly manipulate EIP. Manipulating the EIP is how we alter or control the flow of program.
 So, Lets dive deep to see these instructions.
 		   
