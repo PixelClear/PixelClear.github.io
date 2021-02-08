@@ -39,7 +39,7 @@ So, Lets dive deep to see these instructions.
 =====================================================================================================================================
 
 The place in logic where we manipulate **EIP** creates branch in flow of program.**Unconditional Branches** are used when we want to change the flow or branch out without 
-any condition.Example of this could be function call or loops.Lets see the instructions used to do this
+any condition.Example of this could be function call.Lets see the instructions used to do this
 
 • <ins>Jump</ins>
 
