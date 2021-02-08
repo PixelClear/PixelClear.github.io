@@ -128,7 +128,7 @@ _start:
      call printf
      add $8, %esp                 ----------------------------------> Clear parameters from stack. (4 bytes + 4 bytes)
      call overhere
-	 pushl $2                     ----------------------------------> Push 2 on stack (4 bytes).
+     pushl $2                     ----------------------------------> Push 2 on stack (4 bytes).
      pushl $output                ----------------------------------> Push the address of string output (4 bytes).
      call printf
      add $8, %esp                 ----------------------------------> Clear parameters from stack. (4 bytes + 4 bytes)
