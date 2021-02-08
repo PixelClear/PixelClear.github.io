@@ -50,7 +50,9 @@ any condition.Example of this could be function call or loops.Lets see the instr
    There are multiple types of jumps. Based of on the distance between the current **EIP** location and jump to location, one of the following jumps should be used.
    
 >    Short Jump - Used when jump offset is less than 128 bytes.
+
 >    Far Jump   - Used when location of jump is in another segment. 
+
 >    Near Jump  - In all places where Short and Far jump is not applied.
 
    GAS will take care of converting to proper jump if you just use mnemonic **jmp**.But, beware this will have performance implications. In next parts we will see 
@@ -75,6 +77,7 @@ label:
    Commands to generate following output are as below 
    
 >    as --32 -o Jump.o Jump.s
+
 >    objdump -m i386 -D Jump.o
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~	 
@@ -153,9 +156,13 @@ overhere:
    Based on the status of **EFLAGS** conditional jump instruction will be executed.These types of instruction consults below 5 flags
    
 >    Carry flag (CF) - bit 0 (lease significant bit)
+
 >    Overflow flag (OF) - bit 11
+
 >    Parity flag (PF) - bit 2
+
 >    Sign flag (SF) - bit 7
+
 >    Zero flag (ZF) - bit 6
 
    Please see example and explaination for conditional branches in section **Indexed Memory Addressing Mode** of Part II of the series.
@@ -258,17 +265,19 @@ we have branches in program this task becomes little bit complicated.Also the or
 in wrong way?.This will actually affect the performance a lot.So **Out Of Order Unit** takea help of **Branch Prediction Unit**. This unit has some basic rules on how to evaluate the branches in program path.
 
 >     Backward Branches are always taken - Loop is example of backward branch where we will go back to start of loop to execute instructions those might be previously executed.
+
 >     Forward Branches are never taken -  More details in section below.
+
 >     Braches previously taken are taken again
 
-Now lets examine our program again. Please see instructions **cmpl -12(%ebp), %edx** and **jle .L2 **. So compiler changed the code because it saw that If-Then part is likely to be taken so,
+Now lets examine our program again. Please see instructions (cmpl -12(%ebp), %edx) and (jle .L2).Compiler changed the code because it saw that If-Then part is likely to be taken so,
 it changed the logic such that, If-Else part becomes the forward branch. So **Branch Prediction Unit** will predict this branch will not be executed and hence instead of If-Else part If-Then 
 code will be prefeched and we will get desired performance.So, in short placing code that is most likely to be taken as the fall-through of the JUMP forward statement increases the likelihood 
 that it will be in the instruction prefetch cache when needed.
 
 **Note** : General Optimization tips you will find online is to avoid branches all together or unroll loops.I would urge you to profile first when ever you are trying to optimize.If profiler shows
            certain branch is very slow then try to see the assembly and try to figure out what is happening.Same follows for loop unrolling.Most of the platforms provide **Conditional Move** to implement branching
-		   which are not that costly.Lets say If **Conditional Move** instruction was not present then, we might have used JUMP and implmented conditions.Thi might have affected the performance.When it comes to loop unrolling
+		   which are not that costly.Lets say, if **Conditional Move** instruction was not present then, we might have used JUMP and implmented conditions.Thi might have affected the performance.When it comes to loop unrolling
 		   we have to be careful.If we unroll loop, it might expand in lots of instruction.As result of this we might end up with no space in instruction prefectch cache and it will again affect the performance.
 
 <ins>**Loops**</ins> 
