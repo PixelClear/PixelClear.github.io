@@ -147,6 +147,7 @@ overhere:
    Above program will print 1 3 2.Please find the explaination next to program in above section.
 
 • <ins>Interrupts</ins>
+
    **INT** instruction is used to issue interrupt and processor will take control to ISR. We saw explaination for interrupts and ISR in Part I of this tutorial series.
    Hence, we will not discuss much about this instruction here.
 
@@ -263,7 +264,7 @@ main:
 We will look at only interesting details.If we observe the flow, compiler has reverse condition than what we have in program.So It might look like reverse of If-Else block we have in program.
 This is done for some specific purpose.To understand this we will need to look at **Branch Prediction Unit**.**Out Of Order Unit** must predict next instructions to be executed but, when 
 we have branches in program this task becomes little bit complicated.Also the original purpose of adding **Out Of Order Unit** is to optimize the processor but, what if it predicts the branch 
-in wrong way?.This will actually affect the performance a lot.So **Out Of Order Unit** takea help of **Branch Prediction Unit**. This unit has some basic rules on how to evaluate the branches in program path.
+in wrong way?.This will actually affect the performance a lot.So, **Out Of Order Unit** take help of **Branch Prediction Unit**.This unit has some basic rules on how to evaluate the branches in program path.
 
 >     Backward Branches are always taken - Loop is example of backward branch where we will go back to start of loop to execute instructions those might be previously executed.
 
