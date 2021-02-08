@@ -42,6 +42,7 @@ The place in logic where we manipulate **EIP** creates branch in flow of program
 any condition.Example of this could be function call or loops.Lets see the instructions used to do this
 
 • <ins>Jump</ins>
+
    This instruction is similar to goto statement for C. It will help the control to go to certain location. When below instruction is executed then **EIP** is
    updated to location(address mentioned with JUMP).
 
